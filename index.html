@@ -1,90 +1,63 @@
-```html
 <!doctype html>
 <html lang="zh-Hant">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>魚鮮會社｜外場兼職職能地圖儀表板</title>
+  <title>魚鮮會社｜外場兼職職能地圖</title>
   <link rel="stylesheet" href="./styles.css" />
 </head>
 <body>
+
   <header class="topbar">
     <div class="wrap">
       <div class="brand">
-        <div class="brand__dot" aria-hidden="true"></div>
+        <div class="brand__dot"></div>
         <div>
-          <div class="brand__title">魚鮮會社｜外場兼職職能地圖</div>
-          <div class="brand__sub">單頁儀表板（Level / 考核 / 晉升 / 評分）</div>
+          <div class="brand__title">魚鮮會社</div>
+          <div class="brand__sub">外場兼職職能地圖｜Career Path</div>
         </div>
-      </div>
-
-      <div class="topbar__actions">
-        <button id="btnPrint" class="btn btn--ghost" type="button">列印 / 存成PDF</button>
       </div>
     </div>
   </header>
 
   <main class="wrap">
+
     <section class="grid grid--3">
-      <article class="card">
-        <div class="card__hd">
-          <h2 class="card__title">Levels 概覽</h2>
-          <div class="pill">外場兼職</div>
-        </div>
-        <div id="levelSummary" class="card__bd"></div>
-      </article>
+      <div class="card">
+        <div class="card__hd">Levels 概覽</div>
+        <div class="card__bd" id="levelSummary"></div>
+      </div>
 
-      <article class="card">
-        <div class="card__hd">
-          <h2 class="card__title">評分區間</h2>
-          <div class="pill pill--gold">統一機制</div>
-        </div>
-        <div id="scoreBands" class="card__bd"></div>
-      </article>
+      <div class="card">
+        <div class="card__hd">評分區間</div>
+        <div class="card__bd" id="scoreBands"></div>
+      </div>
 
-      <article class="card">
-        <div class="card__hd">
-          <h2 class="card__title">注意事項</h2>
-          <div class="pill pill--red">規則</div>
-        </div>
-        <div id="notes" class="card__bd"></div>
-      </article>
+      <div class="card">
+        <div class="card__hd">注意事項</div>
+        <div class="card__bd" id="notes"></div>
+      </div>
     </section>
 
-    <section class="card card--tight">
-      <div class="card__hd">
-        <h2 class="card__title">考核時間軸</h2>
-        <div class="pill pill--gold">Mobile 置中</div>
-      </div>
+    <section class="card">
+      <div class="card__hd">考核時間軸</div>
       <div class="card__bd">
-        <p class="muted">
-          依「累積工時 → 評核 → 未通過則固定工時覆核」的節奏呈現。
-        </p>
-        <div id="timeline" class="timeline" aria-label="考核時間軸"></div>
+        <div id="timeline" class="timeline"></div>
       </div>
     </section>
 
     <section class="grid grid--2">
-      <article class="card">
-        <div class="card__hd">
-          <h2 class="card__title">晉升條件</h2>
-          <div class="pill">門檻</div>
-        </div>
-        <div id="promotionRules" class="card__bd"></div>
-      </article>
+      <div class="card">
+        <div class="card__hd">晉升條件</div>
+        <div class="card__bd" id="promotionRules"></div>
+      </div>
 
-      <article class="card">
-        <div class="card__hd">
-          <h2 class="card__title">維持 / 觀察期</h2>
-          <div class="pill pill--red">Level 3</div>
-        </div>
-        <div id="watchlist" class="card__bd"></div>
-      </article>
+      <div class="card">
+        <div class="card__hd">維持 / 觀察期</div>
+        <div class="card__bd" id="watchlist"></div>
+      </div>
     </section>
 
-    <footer class="footer">
-      <div class="muted">版本：v1（靜態頁面，可直接上 GitHub Pages）</div>
-    </footer>
   </main>
 
   <script src="./app.js"></script>
