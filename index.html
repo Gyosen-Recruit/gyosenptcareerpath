@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>魚鮮會社 - 外場成長儀表板</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap');
+        body { font-family: 'Noto Sans TC', sans-serif; background-color: #fdf2f2; }
+        .brand-bg { background-color: #b21f2c; }
+        .brand-text { color: #b21f2c; }
+        .gold-border { border: 2px solid #FFD700; }
+        .gold-text { color: #FFD700; }
+        .score-box { background: white; border-left: 6px solid #b21f2c; border-radius: 8px; padding: 1rem; margin-bottom: 0.8rem; border-top: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee; }
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <header class="brand-bg text-white py-10 px-6 shadow-xl border-b-8 border-[#FFD700] text-center">
+        <h1 class="text-3xl font-bold mb-6">🍣 魚鮮會社：外場職能成長儀表板</h1>
+        <div class="max-w-4xl mx-auto bg-black/30 p-6 rounded-xl text-left border gold-border">
+            <h2 class="gold-text font-bold mb-3 text-lg text-center underline decoration-white">政策推動初衷</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                <div class="p-2 border-r border-white/20"><b>主管專注管理：</b>減少瑣碎交辦，重心回饋人才培育。</div>
+                <div class="p-2 border-r border-white/20"><b>優化效率減少加班：</b>提升熟練度，落實生活平衡。</div>
+                <div class="p-2"><b>透明晉升留住人才：</b>提供調薪路徑，建立穩定專業團隊。</div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto p-6 space-y-12">
+        
+        <section class="bg-white p-8 rounded-2xl shadow-lg border-2 border-[#FFD700]">
+            <h3 class="text-xl font-bold mb-8 text-center brand-text">考核時數里程碑</h3>
+            <div class="flex justify-between text-center relative">
+                <div class="w-1/3">
+                    <div class="brand-bg text-[#FFD700] w-10 h-10 rounded-full flex items-center justify-center mx-auto font-bold mb-2">1</div>
+                    <div class="font-bold brand-text">Level 1</div>
+                    <div class="text-lg font-bold">150 小時</div>
+                    <div class="text-xs text-gray-500 italic text-center">未過：每 100hr 覆核</div>
+                </div>
+                <div class="w-1/3">
+                    <div class="brand-bg text-[#FFD700] w-10 h-10 rounded-full flex items-center justify-center mx-auto font-bold mb-2">2</div>
+                    <div class="font-bold brand-text">Level 2</div>
+                    <div class="text-lg font-bold">300 小時</div>
+                    <div class="text-xs text-gray-500 italic text-center">未過：每 150hr 覆核</div>
+                </div>
+                <div class="w-1/3">
+                    <div class="brand-bg text-[#FFD700] w-10 h-10 rounded-full flex items-center justify-center mx-auto font-bold mb-2">3</div>
+                    <div class="font-bold brand-text">Level 3</div>
+                    <div class="text-lg font-bold">600 小時</div>
+                    <div class="text-xs text-gray-500 italic text-center">未過：每 300hr 覆核</div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="flex justify-between items-center border-b-4 border-[#FFD700] pb-2 mb-6">
+                <h3 class="text-2xl font-bold brand-text italic">L1 建立服務習慣</h3>
+                <span class="brand-bg text-white px-4 py-1 rounded-full font-bold border border-[#FFD700]">$200/hr</span>
+            </div>
+            <div class="score-box"><b>1. 基本禮儀：</b>入店問候、使用敬語微笑、整潔儀態。</div>
+            <div class="score-box"><b>2. 外場流程：</b>依 SOP 執行倒茶、收桌、set 桌，主動檢查環境。</div>
+            <div class="score-box"><b>3. 出勤信任度：</b>準時到班；150小時內臨請/遲到不超過一次。</div>
+            <div class="score-box"><b>4. 團隊支援：</b>忙碌時協助收桌送餐；被指派任務立即行動。</div>
+            <div class="score-box"><b>5. 清潔整理：</b>確實完成區域清潔，主管抽查未通過2次以下。</div>
+            <p class="text-sm font-bold brand-text mt-2 text-center">晉升條件：評分≥4.0｜無營運異常｜中文 A2</p>
+        </section>
+
+        <section>
+            <div class="flex justify-between items-center border-b-4 border-[#FFD700] pb-2 mb-6">
+                <div>
+                    <h3 class="text-2xl font-bold brand-text italic">L2 全場協調支援</h3>
+                    <div class="text-red-600 font-extrabold mt-1">⚠️ 每月標準時數：75 小時</div>
+                </div>
+                <span class="brand-bg text-white px-4 py-1 rounded-full font-bold border border-[#FFD700]">$220/hr</span>
+            </div>
+            <div class="score-box"><b>1. 流程掌握：</b>高峰期調整收送順序，確保桌面整潔與餐具充足。</div>
+            <div class="score-box"><b>2. 顧客服務：</b>觀察需求續湯、舉手前察覺需求、離席主動道謝。</div>
+            <div class="score-box"><b>3. 餐點追蹤：</b>注意內場進度，延遲逾20分主動回報主管。</div>
+            <div class="score-box"><b>4. 團隊合作：</b>忙碌即時支援他區、主動補位他區狀況。</div>
+            <div class="score-box"><b>5. 溝通態度：</b>即時回報異常狀況，表達清楚且語氣穩定。</div>
+            <p class="text-sm font-bold brand-text mt-2 text-center">晉升條件：評分≥4.25｜穩定帶領新人｜中文 B2</p>
+        </section>
+
+        <section>
+            <div class="flex justify-between items-center border-b-4 border-[#FFD700] pb-2 mb-6">
+                <div>
+                    <h3 class="text-2xl font-bold brand-text italic">L3 現場主導協調</h3>
+                    <div class="text-red-600 font-extrabold mt-1">⚠️ 每月標準時數：100 小時</div>
+                </div>
+                <span class="brand-bg text-white px-4 py-1 rounded-full font-bold border border-[#FFD700]">$250/hr</span>
+            </div>
+            <div class="score-box"><b>1. 預期管理：</b>掌握五台出單狀況，主動告知顧客等待品項。</div>
+            <div class="score-box"><b>2. 團隊協調：</b>高峰明確分配任務，穩定節奏與即時補位。</div>
+            <div class="score-box"><b>3. 溝通態度：</b>遇突發狀況冷靜安撫顧客，語氣穩定明確。</div>
+            <div class="score-box"><b>4. 櫃檯應對：</b>獨立完成結帳、外帶與訂位，紀錄正確。</div>
+            <div class="score-box"><b>5. 責任感：</b>無臨時缺班，能於他人請假時主動遞補。</div>
+            <div class="mt-4 p-3 bg-red-100 text-red-800 rounded-lg text-sm text-center font-bold">維持條件：評分 < 3.75 或 未達保障時數 進入觀察期</div>
+        </section>
+
+    </main>
+
+    <footer class="text-center py-10 text-slate-400 text-xs border-t gold-border mt-10 brand-bg text-white">
+        魚鮮會社 2025 職能發展系統｜讓每分努力都有透明的回報
+    </footer>
+</body>
+</html>
