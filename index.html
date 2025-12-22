@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>魚鮮會社 - 外場職能成長儀表板</title>
+    <title>魚鮮會社 - 職能成長儀表板</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -30,6 +30,7 @@
         }
 
         .score-box { background: #ffffff; border: 1px solid #f5e1e1; border-left: 6px solid #b21f2c; border-radius: 8px; padding: 1.25rem; margin-bottom: 1rem; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+        .kpi-title { font-weight: 700; color: #b21f2c; margin-right: 8px; }
         .hour-badge { background: #b21f2c; color: #FFD700; border: 2px solid #FFD700; padding: 4px 12px; border-radius: 999px; font-weight: 800; font-size: 1.1rem; display: inline-block; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
     </style>
 </head>
@@ -43,7 +44,7 @@
             <div class="bg-black/40 p-6 md:p-8 rounded-2xl mt-8 border-2 bright-gold-border text-left">
                 <h2 class="text-xl font-bold mb-4 text-[#FFD700] italic underline underline-offset-8 text-center">政策推動初衷與成果預期</h2>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm text-slate-100">
-                    <div class="bg-white/5 p-4 rounded-xl border-l-4 bright-gold-border text-center font-bold">主管專注管理：減少重複交辦，重心回饋人才培育。</div>
+                    <div class="bg-white/5 p-4 rounded-xl border-l-4 bright-gold-border text-center font-bold">主管專注管理：減少重複交辦，重心回到人才培育。</div>
                     <div class="bg-white/5 p-4 rounded-xl border-l-4 bright-gold-border text-center font-bold">優化效率減少加班：提升熟練度，落實生活平衡。</div>
                     <div class="bg-white/5 p-4 rounded-xl border-l-4 bright-gold-border text-center font-bold">透明晉升留住人才：提供調薪路徑，建立穩定團隊。</div>
                 </div>
@@ -62,24 +63,20 @@
                     <div class="step-content">
                         <div class="font-bold brand-text text-lg">Level 1</div>
                         <div class="text-xl font-bold mt-1">150 小時</div>
-                        <div class="text-xs text-gray-400 mt-1 italic">未過：每 100hr 覆核</div>
+                        <div class="text-xs text-gray-500 mt-2 italic">未過：每 100hr 覆核</div>
                     </div>
                 </div>
                 <div class="timeline-step">
                     <div class="step-icon">2</div>
-                    <div class="step-content">
-                        <div class="font-bold brand-text text-lg">Level 2</div>
-                        <div class="text-xl font-bold mt-1">300 小時</div>
-                        <div class="text-xs text-gray-400 mt-1 italic">未過：每 150hr 覆核</div>
-                    </div>
+                    <div class="font-bold brand-text text-lg">Level 2</div>
+                    <div class="text-xl font-bold mt-1">300 小時</div>
+                    <div class="text-xs text-gray-400 mt-2 italic">未過：每 150hr 覆核</div>
                 </div>
                 <div class="timeline-step">
                     <div class="step-icon">3</div>
-                    <div class="step-content">
-                        <div class="font-bold brand-text text-lg">Level 3</div>
-                        <div class="text-xl font-bold mt-1">600 小時</div>
-                        <div class="text-xs text-gray-400 mt-1 italic">未過：每 300hr 覆核</div>
-                    </div>
+                    <div class="font-bold brand-text text-lg">Level 3</div>
+                    <div class="text-xl font-bold mt-1">600 小時</div>
+                    <div class="text-xs text-gray-400 mt-2 italic">未過：每 300hr 覆核</div>
                 </div>
             </div>
         </section>
@@ -130,19 +127,19 @@
             <div class="score-box"><b>3. 溝通與態度：</b>遇突發狀況冷靜安撫顧客，語氣穩定明確。</div>
             <div class="score-box"><b>4. 櫃檯應對：</b>獨立完成結帳、外帶與電話訂位，紀錄正確。</div>
             <div class="score-box"><b>5. 責任感：</b>無臨時缺班，能於他人請假時主動遞補。</div>
-            <div class="mt-4 p-4 bg-red-50 rounded-xl text-red-800 text-lg font-bold border border-red-200 text-center italic">
+            <div class="mt-4 p-4 bg-red-50 rounded-xl text-red-800 text-lg font-bold border border-red-200 text-center italic text-red-700">
                 維持條件：平均評分低於 3.75 或 未達保障時數 進入觀察期
             </div>
         </section>
 
         <section class="brand-bg text-white p-10 rounded-3xl border-4 bright-gold-border shadow-lg">
-            <h4 class="text-2xl font-bold mb-6 text-[#FFD700] underline underline-offset-8">管理機制定義</h4>
+            <h4 class="text-2xl font-bold mb-6 text-[#FFD700] underline underline-offset-8 text-center md:text-left">管理機制定義</h4>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm opacity-90 leading-relaxed text-slate-100">
-                <div>
+                <div class="text-center md:text-left">
                     <p class="font-bold mb-2 text-lg text-white">營運異常定義</p>
                     <p>因臨時請假、遲到或失誤，造成團隊需調整班表、影響顧客體驗之情況。</p>
                 </div>
-                <div>
+                <div class="text-center md:text-left">
                     <p class="font-bold mb-2 text-lg text-white">績效分級</p>
                     <p>4.5 - 5.0：卓越 / 4.0 - 4.49：合格</p>
                     <p>3.5 - 3.99：待強化 / 低於 3.5：不達標</p>
@@ -151,7 +148,7 @@
         </section>
     </main>
 
-    <footer class="text-center py-12 text-slate-400 text-xs border-t gold-border">
+    <footer class="text-center py-12 text-slate-400 text-xs border-t gold-border mt-10">
         魚鮮會社 2025 職能發展系統｜讓每分努力都有亮眼的回報
     </footer>
 </body>
