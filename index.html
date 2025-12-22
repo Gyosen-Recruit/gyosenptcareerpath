@@ -14,19 +14,19 @@
         .bright-gold-border { border-color: #FFD700; }
         .bright-gold-bg { background-color: #FFD700; }
         
-        /* 響應式時間軸 */
-        .timeline-container { display: flex; flex-direction: column; position: relative; padding: 20px 0; }
-        .timeline-line { position: absolute; left: 22px; top: 0; bottom: 0; width: 3px; background: #FFD700; z-index: 1; }
-        .timeline-step { position: relative; z-index: 2; display: flex; align-items: flex-start; margin-bottom: 30px; width: 100%; }
-        .step-icon { width: 44px; height: 44px; flex-shrink: 0; background: #b21f2c; border: 3px solid #FFD700; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #FFD700; font-weight: bold; margin-right: 15px; }
-        .step-content { text-align: left; }
+        /* 響應式時間軸：手機版置中設計 */
+        .timeline-container { display: flex; flex-direction: column; position: relative; padding: 20px 0; align-items: center; }
+        .timeline-line { position: absolute; left: 50%; top: 0; bottom: 0; width: 3px; background: #FFD700; z-index: 1; transform: translateX(-50%); }
+        .timeline-step { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; margin-bottom: 40px; width: 100%; text-align: center; }
+        .step-icon { width: 44px; height: 44px; flex-shrink: 0; background: #b21f2c; border: 3px solid #FFD700; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #FFD700; font-weight: bold; margin-bottom: 12px; }
+        .step-content { background-color: #fff; padding: 8px 16px; border-radius: 12px; border: 1px solid #f5e1e1; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); }
 
+        /* 電腦版橫向排列 */
         @media (min-width: 768px) {
-            .timeline-container { flex-direction: row; justify-content: space-between; }
-            .timeline-line { top: 40px; left: 10%; right: 10%; width: auto; height: 3px; }
-            .timeline-step { flex-direction: column; align-items: center; width: 30%; margin-bottom: 0; }
-            .step-icon { margin-right: 0; margin-bottom: 10px; }
-            .step-content { text-align: center; }
+            .timeline-container { flex-direction: row; justify-content: space-between; align-items: flex-start; }
+            .timeline-line { top: 22px; left: 10%; right: 10%; width: auto; height: 3px; transform: none; }
+            .timeline-step { width: 30%; margin-bottom: 0; }
+            .step-content { background-color: transparent; border: none; shadow: none; padding: 0; }
         }
 
         .score-box { background: #ffffff; border: 1px solid #f5e1e1; border-left: 6px solid #b21f2c; border-radius: 8px; padding: 1.25rem; margin-bottom: 1rem; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
@@ -57,6 +57,7 @@
             <h3 class="text-2xl font-bold mb-10 text-center brand-text">考核週期時數里程碑</h3>
             <div class="timeline-container">
                 <div class="timeline-line"></div>
+                
                 <div class="timeline-step">
                     <div class="step-icon">1</div>
                     <div class="step-content">
@@ -65,6 +66,7 @@
                         <div class="text-xs text-gray-500 mt-2 italic">未過：每 100hr 覆核</div>
                     </div>
                 </div>
+
                 <div class="timeline-step">
                     <div class="step-icon">2</div>
                     <div class="step-content">
@@ -73,10 +75,10 @@
                         <div class="text-xs text-gray-400 mt-2 italic">未過：每 150hr 覆核</div>
                     </div>
                 </div>
+
                 <div class="timeline-step">
                     <div class="step-icon">3</div>
                     <div class="step-content">
-                        <div class="step-icon">3</div>
                         <div class="font-bold brand-text text-lg">Level 3</div>
                         <div class="text-xl font-bold mt-1">600 小時</div>
                         <div class="text-xs text-gray-400 mt-2 italic">未過：每 300hr 覆核</div>
