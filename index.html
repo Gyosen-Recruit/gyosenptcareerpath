@@ -14,7 +14,7 @@
         body { 
             background-color: #ffffff; 
             color: #2d3436; 
-            font-size: 1.1rem; /* 整體字體放大 */
+            font-size: 1.15rem; 
             font-family: "PingFang TC", "Microsoft JhengHei", sans-serif;
         }
         .text-brand-red { color: var(--brand-red); }
@@ -22,7 +22,6 @@
         .text-brand-gold { color: var(--brand-gold); }
         .bg-brand-gold { background-color: var(--brand-gold); }
         
-        /* 時間軸橫向捲動 */
         .timeline-scroll {
             display: flex;
             overflow-x: auto;
@@ -43,95 +42,81 @@
             box-shadow: 0 10px 25px rgba(0,0,0,0.05);
             transition: transform 0.3s;
         }
-        .level-card:hover { transform: translateY(-5px); }
-        
-        .badge-hours {
-            background-color: #f8f9fa;
-            border: 1px solid var(--brand-gold);
-            color: var(--brand-gold);
-            font-weight: 800;
-        }
     </style>
 </head>
 <body class="bg-gray-50/50">
 
-    <header class="bg-white border-b-2 border-gray-100 py-16 px-6">
+    <header class="bg-white border-b-2 border-gray-100 py-16 px-6 shadow-sm">
         <div class="max-w-6xl mx-auto text-center">
             <h1 class="text-4xl md:text-5xl font-black text-brand-red mb-6">魚鮮會社外場職能管理地圖</h1>
-            <p class="text-xl text-gray-500 mb-12">打造透明、公平、專業的成長環境</p>
+            <p class="text-xl text-gray-500 mb-12 italic">透明、公平、專業：與公司共同成長的藍圖</p>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
-                <div class="p-6 bg-red-50/50 rounded-2xl">
+                <div class="p-8 bg-red-50/50 rounded-2xl border border-red-100">
                     <i class="fas fa-clock text-brand-red text-3xl mb-4"></i>
                     <h4 class="text-xl font-bold mb-2">減少加班</h4>
-                    <p class="text-gray-600">透過精熟的 SOP，提高現場人效，讓夥伴準時下班。</p>
+                    <p class="text-gray-600">熟練 SOP 以提升效率 [cite: 3]，讓每位夥伴都能準時下班。</p>
                 </div>
-                <div class="p-6 bg-yellow-50/50 rounded-2xl">
+                <div class="p-8 bg-yellow-50/50 rounded-2xl border border-yellow-100">
                     <i class="fas fa-user-tie text-brand-gold text-3xl mb-4"></i>
                     <h4 class="text-xl font-bold mb-2">主管專注管理</h4>
-                    <p class="text-gray-600">一線同仁獨立作業，主管能全力優化品質與服務細節。</p>
+                    <p class="text-gray-600">同仁具備獨立作業能力 [cite: 3, 14, 27]，主管能專注於營運優化。</p>
                 </div>
-                <div class="p-6 bg-gray-100 rounded-2xl">
+                <div class="p-8 bg-gray-100 rounded-2xl border border-gray-200">
                     <i class="fas fa-chart-line text-gray-700 text-3xl mb-4"></i>
                     <h4 class="text-xl font-bold mb-2">透明升遷路徑</h4>
-                    <p class="text-gray-600">時數與表現量化，讓每一份努力都能轉化為實質回報。</p>
+                    <p class="text-gray-600">量化評分標準 [cite: 4, 16, 29]，讓升遷機制公平且公開 [cite: 38]。</p>
                 </div>
             </div>
         </div>
     </header>
 
     <section class="max-w-6xl mx-auto my-12 text-center">
-        <h3 class="text-2xl font-bold text-brand-gold mb-2 italic">成長里程碑</h3>
+        <h3 class="text-2xl font-bold text-brand-gold mb-2 italic">人才成長里程碑</h3>
         <div class="timeline-scroll space-x-12">
             <div class="flex-none w-64 border-b-8 border-brand-red pb-4">
                 <span class="text-2xl font-black text-brand-red">Level 1</span>
-                <p class="text-gray-500 font-bold">累積 150H 評核</p>
+                <p class="text-gray-500 font-bold">累積 150H 評核 [cite: 3]</p>
             </div>
             <div class="flex-none w-64 border-b-8 border-brand-gold pb-4">
                 <span class="text-2xl font-black text-brand-gold">Level 2</span>
-                <p class="text-gray-500 font-bold">累積 300H 評核</p>
+                <p class="text-gray-500 font-bold">累積 300H 評核 [cite: 15]</p>
             </div>
             <div class="flex-none w-64 border-b-8 border-gray-300 pb-4">
                 <span class="text-2xl font-black text-gray-700">Level 3</span>
-                <p class="text-gray-500 font-bold">累積 600H 評核</p>
+                <p class="text-gray-500 font-bold">累積 600H 評核 [cite: 28]</p>
             </div>
         </div>
     </section>
 
-    <main class="max-w-6xl mx-auto px-6 space-y-16 pb-24">
-        
+    <main class="max-w-6xl mx-auto px-6 space-y-16 mb-20">
         <div class="level-card rounded-3xl p-8 md:p-12">
             <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b-2 border-gray-100 pb-8 mb-8 gap-4">
                 <div>
-                    <h2 class="text-3xl font-black text-brand-red mb-2">LEVEL 1：建立服務習慣</h2>
-                    <p class="text-lg text-gray-500 italic">目標：正確習慣、理解 SOP 並獨立完成基本任務</p>
+                    <h2 class="text-3xl font-black text-brand-red mb-2">LEVEL 1：建立服務習慣 [cite: 1]</h2>
+                    <p class="text-lg text-gray-500 italic">目標：正確習慣、理解 SOP 並獨立完成基本任務 [cite: 3]</p>
                 </div>
                 <div class="text-left md:text-right">
-                    <div class="text-4xl font-black text-brand-gold">$200<span class="text-lg font-normal text-gray-400">/hr</span></div>
-                    <span class="text-sm font-bold text-gray-400">累積 150H 進行初次評核</span>
+                    <div class="text-4xl font-black text-brand-gold">$200<span class="text-lg font-normal text-gray-400">/hr [cite: 2]</span></div>
                 </div>
             </div>
-
             <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-                <div class="space-y-6">
-                    <h4 class="text-xl font-bold text-brand-gold border-l-4 border-brand-gold pl-3">核心職能標準</h4>
-                    <div class="bg-gray-50 p-6 rounded-xl">
-                        <p class="font-black text-lg mb-2">基本禮儀與流程</p>
-                        <p class="text-gray-700">5 分：全程主動問候、語氣敬業、流程俐落清潔。</p>
-                        <p class="text-gray-400 text-sm mt-2">1 分：無問候、態度冷淡、多次遺漏流程。</p>
-                    </div>
-                    <div class="bg-gray-50 p-6 rounded-xl">
-                        <p class="font-black text-lg mb-2">出勤與支援</p>
-                        <p class="text-gray-700">5 分：準時到班、穩定出勤、主動協助收桌送餐。</p>
-                        <p class="text-gray-400 text-sm mt-2">1 分：多次遲到、拒絕或消極支援。</p>
+                <div class="space-y-6 text-base">
+                    <h4 class="text-xl font-bold text-brand-gold border-l-4 border-brand-gold pl-3">核心職能標準 [cite: 4]</h4>
+                    <div class="bg-gray-50 p-6 rounded-xl border-l-4 border-brand-red">
+                        <p class="font-black mb-1">禮儀與流程 [cite: 4]</p>
+                        <ul class="space-y-1 text-gray-700">
+                            <li>5分：全程主動問候、流程俐落 [cite: 4]</li>
+                            <li>1分：態度冷淡、多次遺漏流程 [cite: 4]</li>
+                        </ul>
                     </div>
                 </div>
-                <div class="bg-red-50 p-8 rounded-3xl border-2 border-brand-red/10">
-                    <h4 class="text-2xl font-black text-brand-red mb-6">晉升 Level 2 門檻</h4>
-                    <ul class="text-lg space-y-4">
-                        <li class="flex items-start"><i class="fas fa-check-circle text-brand-red mt-1 mr-3"></i><span>平均評分 ≥ 4.0</span></li>
-                        <li class="flex items-start"><i class="fas fa-check-circle text-brand-red mt-1 mr-3"></i><span>無營運異常 (遲到/臨時請假 ≤ 1次)</span></li>
-                        <li class="flex items-start"><i class="fas fa-check-circle text-brand-red mt-1 mr-3"></i><span>外籍生通過中文檢定 A2</span></li>
+                <div class="bg-red-50 p-8 rounded-3xl border border-red-100">
+                    <h4 class="text-2xl font-black text-brand-red mb-6">晉升 Level 2 門檻 [cite: 5]</h4>
+                    <ul class="text-lg space-y-4 font-bold">
+                        <li><i class="fas fa-check text-brand-red mr-2"></i>平均評分 ≥ 4.0 [cite: 7]</li>
+                        <li><i class="fas fa-check text-brand-red mr-2"></i>無營運異常紀錄 [cite: 8]</li>
+                        <li><i class="fas fa-check text-brand-red mr-2"></i>外籍生中文檢定 A2 [cite: 9]</li>
                     </ul>
                 </div>
             </div>
@@ -140,38 +125,33 @@
         <div class="level-card rounded-3xl p-8 md:p-12" style="border-top-color: var(--brand-gold);">
             <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b-2 border-gray-100 pb-8 mb-8 gap-4">
                 <div>
-                    <h2 class="text-3xl font-black text-brand-gold mb-2">LEVEL 2：全場協調支援</h2>
-                    <p class="text-lg text-gray-500 italic">目標：獨立支援全場、掌握節奏、教導新人</p>
-                    <div class="inline-block mt-3 px-4 py-1 badge-hours rounded-full text-sm">
-                        <i class="fas fa-clock mr-2"></i>月標準時數：75 小時
+                    <h2 class="text-3xl font-black text-brand-gold mb-2">LEVEL 2：全場協調支援 [cite: 10]</h2>
+                    <p class="text-lg text-gray-500 italic">目標：掌握節奏、協助他人與教導新人 [cite: 14]</p>
+                    <div class="mt-4 px-4 py-1 bg-yellow-100 text-brand-gold rounded-full text-sm font-black border border-brand-gold/30">
+                        <i class="fas fa-clock mr-2"></i>月標準時數：75 小時 [cite: 13]
                     </div>
                 </div>
                 <div class="text-left md:text-right">
-                    <div class="text-4xl font-black text-brand-gold">$220<span class="text-lg font-normal text-gray-400">/hr</span></div>
-                    <span class="text-sm font-bold text-gray-400">晉升後累積 300H 評核</span>
+                    <div class="text-4xl font-black text-brand-gold">$220<span class="text-lg font-normal text-gray-400">/hr [cite: 12]</span></div>
                 </div>
             </div>
-
             <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-                <div class="space-y-6">
-                    <h4 class="text-xl font-bold text-brand-gold border-l-4 border-brand-gold pl-3">核心職能標準</h4>
-                    <div class="bg-gray-50 p-6 rounded-xl">
-                        <p class="font-black text-lg mb-2">節奏掌握與服務</p>
-                        <p class="text-gray-700">5 分：高峰期能自主調整順序、主動續湯/預判需求。</p>
-                        <p class="text-gray-400 text-sm mt-2">1 分：動線混亂、需顧客提醒才行動。</p>
-                    </div>
-                    <div class="bg-gray-50 p-6 rounded-xl">
-                        <p class="font-black text-lg mb-2">餐點追蹤與補位</p>
-                        <p class="text-gray-700">5 分：主動監控出餐即時回報、主動支援他區。</p>
-                        <p class="text-gray-400 text-sm mt-2">1 分：不支援、未追蹤導致嚴重延誤。</p>
+                <div class="space-y-6 text-base">
+                    <h4 class="text-xl font-bold text-brand-gold border-l-4 border-brand-gold pl-3">核心職能標準 [cite: 16]</h4>
+                    <div class="bg-gray-50 p-6 rounded-xl border-l-4 border-brand-gold">
+                        <p class="font-black mb-1">節奏與追蹤 [cite: 16]</p>
+                        <ul class="space-y-1 text-gray-700">
+                            <li>5分：自主調整順序、主動監控出餐 [cite: 16]</li>
+                            <li>1分：動線混亂、未追蹤延誤 [cite: 16]</li>
+                        </ul>
                     </div>
                 </div>
-                <div class="bg-yellow-50/50 p-8 rounded-3xl border-2 border-brand-gold/20">
-                    <h4 class="text-2xl font-black text-brand-gold mb-6">晉升 Level 3 門檻</h4>
-                    <ul class="text-lg space-y-4">
-                        <li class="flex items-start"><i class="fas fa-star text-brand-gold mt-1 mr-3"></i><span>平均評分 ≥ 4.25</span></li>
-                        <li class="flex items-start"><i class="fas fa-star text-brand-gold mt-1 mr-3"></i><span>穩定展現帶領新人與主動補位行為</span></li>
-                        <li class="flex items-start"><i class="fas fa-star text-brand-gold mt-1 mr-3"></i><span>外籍生通過中文檢定 B2</span></li>
+                <div class="bg-yellow-50/50 p-8 rounded-3xl border border-yellow-200">
+                    <h4 class="text-2xl font-black text-brand-gold mb-6">晉升 Level 3 門檻 [cite: 17]</h4>
+                    <ul class="text-lg space-y-4 font-bold">
+                        <li><i class="fas fa-star text-brand-gold mr-2"></i>平均評分 ≥ 4.25 [cite: 19]</li>
+                        <li><i class="fas fa-star text-brand-gold mr-2"></i>穩定帶新人與補位行為 [cite: 20]</li>
+                        <li><i class="fas fa-star text-brand-gold mr-2"></i>外籍生中文檢定 B2 [cite: 22]</li>
                     </ul>
                 </div>
             </div>
@@ -180,46 +160,76 @@
         <div class="level-card rounded-3xl p-8 md:p-12" style="border-top-color: #333;">
             <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b-2 border-gray-100 pb-8 mb-8 gap-4">
                 <div>
-                    <h2 class="text-3xl font-black text-gray-800 mb-2">LEVEL 3：現場資訊主導</h2>
-                    <p class="text-lg text-gray-500 italic">目標：管理內場資訊、帶領同仁協調品質</p>
-                    <div class="inline-block mt-3 px-4 py-1 bg-gray-800 text-white rounded-full text-sm font-bold">
-                        <i class="fas fa-clock mr-2"></i>月標準時數：100 小時
+                    <h2 class="text-3xl font-black text-gray-800 mb-2">LEVEL 3：現場主導協調 [cite: 23]</h2>
+                    <p class="text-lg text-gray-500 italic">目標：掌握五台出單、管理顧客等待預期 [cite: 27]</p>
+                    <div class="mt-4 px-4 py-1 bg-gray-800 text-white rounded-full text-sm font-black">
+                        <i class="fas fa-clock mr-2"></i>月標準時數：100 小時 [cite: 26]
                     </div>
                 </div>
                 <div class="text-left md:text-right">
-                    <div class="text-4xl font-black text-brand-gold">$250<span class="text-lg font-normal text-gray-400">/hr</span></div>
-                    <span class="text-sm font-bold text-gray-400">晉升後累積 600H 評核</span>
+                    <div class="text-4xl font-black text-brand-gold">$250<span class="text-lg font-normal text-gray-400">/hr [cite: 25]</span></div>
                 </div>
             </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 text-base">
                 <div class="space-y-6">
-                    <h4 class="text-xl font-bold text-brand-gold border-l-4 border-brand-gold pl-3">核心職能標準</h4>
-                    <div class="bg-gray-50 p-6 rounded-xl">
-                        <p class="font-black text-lg mb-2">內場資訊與預期管理</p>
-                        <p class="text-gray-700">5 分：定期觀察內場狀況、主動告知顧客等待時間。</p>
-                        <p class="text-gray-400 text-sm mt-2">1 分：未掌握資訊、導致現場混亂或客訴。</p>
-                    </div>
-                    <div class="bg-gray-50 p-6 rounded-xl">
-                        <p class="font-black text-lg mb-2">櫃檯與團隊分配</p>
-                        <p class="text-gray-700">5 分：結帳 100% 正確、高峰期明確分配同仁任務。</p>
-                        <p class="text-gray-400 text-sm mt-2">1 分：分工不清、結帳多次錯誤或紀錄遺漏。</p>
+                    <h4 class="text-xl font-bold text-brand-gold border-l-4 border-brand-gold pl-3">核心職能標準 [cite: 29]</h4>
+                    <div class="bg-gray-50 p-6 rounded-xl border-l-4 border-gray-800">
+                        <p class="font-black mb-1">資訊掌握與協調 [cite: 29]</p>
+                        <ul class="space-y-1 text-gray-700">
+                            <li>5分：主動觀察五台並即時管理預期 [cite: 29]</li>
+                            <li>1分：未掌握資訊、結帳多次錯誤 [cite: 29]</li>
+                        </ul>
                     </div>
                 </div>
-                <div class="bg-gray-100 p-8 rounded-3xl">
-                    <h4 class="text-2xl font-black text-gray-800 mb-6">維持資格條件</h4>
-                    <ul class="text-lg space-y-4 text-gray-700">
-                        <li class="flex items-start"><i class="fas fa-exclamation-triangle mt-1 mr-3 text-brand-red"></i><span>平均評分 < 3.75 進入觀察期</span></li>
-                        <li class="flex items-start"><i class="fas fa-exclamation-triangle mt-1 mr-3 text-brand-red"></i><span>發生重大異常事件立即啟動降級評估</span></li>
-                        <li class="flex items-start"><i class="fas fa-exclamation-triangle mt-1 mr-3 text-brand-red"></i><span>未達月標準 100 小時將進行晤談</span></li>
+                <div class="bg-gray-100 p-8 rounded-3xl border border-gray-200">
+                    <h4 class="text-2xl font-black text-gray-800 mb-6 text-base">維持與降級規則 [cite: 32]</h4>
+                    <ul class="text-lg space-y-4">
+                        <li><i class="fas fa-exclamation-triangle text-brand-red mr-2"></i>平均評分 < 3.75 進入觀察期 [cite: 33]</li>
+                        <li><i class="fas fa-exclamation-triangle text-brand-red mr-2"></i>觀察期未達 ≥ 4.0 將降級 L2 [cite: 34]</li>
+                        <li><i class="fas fa-exclamation-triangle text-brand-red mr-2"></i>發生重大事件立即觀察 [cite: 35]</li>
                     </ul>
                 </div>
             </div>
         </div>
     </main>
 
-    <footer class="text-center py-12 text-gray-400 text-sm border-t border-gray-100 bg-white">
-        © 2025 魚鮮會社 YUXIAN - 外場職能發展地圖系統
+    <section class="max-w-6xl mx-auto px-6 mb-24">
+        <div class="bg-white border-2 border-gray-200 rounded-3xl overflow-hidden shadow-lg text-base">
+            <div class="bg-gray-800 text-white p-6 font-black text-2xl">
+                <i class="fas fa-gavel mr-3 text-brand-gold"></i> 營運規範與定義 [cite: 39]
+            </div>
+            <div class="p-8 grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div>
+                    <h4 class="text-brand-red font-black text-xl mb-4 italic underline decoration-2 underline-offset-8">營運異常定義 [cite: 39]</h4>
+                    <p class="text-gray-700 mb-4 leading-relaxed font-bold">
+                        指任何因臨時請假、遲到、或現場失誤，造成團隊臨時調整班表、出餐錯誤或影響顧客體驗的情況 [cite: 40]。
+                    </p>
+                    <div class="bg-gray-50 p-4 rounded-xl border border-gray-200">
+                        <p class="font-black text-brand-gold mb-2">不計入異常之情況 [cite: 41]：</p>
+                        <ul class="text-gray-600 space-y-2">
+                            <li>● 已提前協調請假並完成調班 [cite: 42]。</li>
+                            <li>● 交通事故、家中突發（需出示證明）[cite: 43]。</li>
+                        </ul>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-brand-red font-black text-xl mb-4 italic underline decoration-2 underline-offset-8">嚴重事件定義 [cite: 44]</h4>
+                    <p class="text-gray-700 mb-6 leading-relaxed font-bold">
+                        指造成店內營運中斷、顧客投訴或同事需額外負擔的重大狀況 [cite: 45]。
+                    </p>
+                    <div class="bg-red-50 p-6 rounded-xl border-2 border-brand-red/20">
+                        <p class="font-black text-brand-red mb-2"><i class="fas fa-exclamation-circle mr-2"></i>處理機制：</p>
+                        <p class="text-gray-700 leading-relaxed">
+                            一旦事件成立，將直接啟動「觀察期」或進行「降級評估」。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="text-center py-12 text-gray-400 border-t border-gray-200 bg-white font-bold">
+        © 2025 魚鮮會社 YUXIAN - 外場職能管理與升遷體系
     </footer>
 
 </body>
