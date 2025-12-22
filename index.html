@@ -14,7 +14,7 @@
         .bright-gold-border { border-color: #FFD700; }
         .bright-gold-bg { background-color: #FFD700; }
         
-        /* 響應式時間軸：電腦橫向 / 手機縱向 */
+        /* 響應式時間軸 */
         .timeline-container { display: flex; flex-direction: column; position: relative; padding: 20px 0; }
         .timeline-line { position: absolute; left: 22px; top: 0; bottom: 0; width: 3px; background: #FFD700; z-index: 1; }
         .timeline-step { position: relative; z-index: 2; display: flex; align-items: flex-start; margin-bottom: 30px; width: 100%; }
@@ -30,7 +30,6 @@
         }
 
         .score-box { background: #ffffff; border: 1px solid #f5e1e1; border-left: 6px solid #b21f2c; border-radius: 8px; padding: 1.25rem; margin-bottom: 1rem; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
-        .kpi-title { font-weight: 700; color: #b21f2c; margin-right: 8px; }
         .hour-badge { background: #b21f2c; color: #FFD700; border: 2px solid #FFD700; padding: 4px 12px; border-radius: 999px; font-weight: 800; font-size: 1.1rem; display: inline-block; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
     </style>
 </head>
@@ -68,15 +67,20 @@
                 </div>
                 <div class="timeline-step">
                     <div class="step-icon">2</div>
-                    <div class="font-bold brand-text text-lg">Level 2</div>
-                    <div class="text-xl font-bold mt-1">300 小時</div>
-                    <div class="text-xs text-gray-400 mt-2 italic">未過：每 150hr 覆核</div>
+                    <div class="step-content">
+                        <div class="font-bold brand-text text-lg">Level 2</div>
+                        <div class="text-xl font-bold mt-1">300 小時</div>
+                        <div class="text-xs text-gray-400 mt-2 italic">未過：每 150hr 覆核</div>
+                    </div>
                 </div>
                 <div class="timeline-step">
                     <div class="step-icon">3</div>
-                    <div class="font-bold brand-text text-lg">Level 3</div>
-                    <div class="text-xl font-bold mt-1">600 小時</div>
-                    <div class="text-xs text-gray-400 mt-2 italic">未過：每 300hr 覆核</div>
+                    <div class="step-content">
+                        <div class="step-icon">3</div>
+                        <div class="font-bold brand-text text-lg">Level 3</div>
+                        <div class="text-xl font-bold mt-1">600 小時</div>
+                        <div class="text-xs text-gray-400 mt-2 italic">未過：每 300hr 覆核</div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -91,8 +95,8 @@
             <div class="score-box"><b>3. 出勤信任度：</b>準時到班；150小時內臨請/遲到不超過一次。</div>
             <div class="score-box"><b>4. 團隊支援：</b>忙碌時協助收桌送餐；被指派任務立即行動。</div>
             <div class="score-box"><b>5. 清潔與整理：</b>確實完成區域清潔，主管抽查未過2次以下。</div>
-            <div class="mt-4 p-4 bg-green-50 rounded-xl text-green-800 text-sm font-bold border border-green-200 text-center text-lg">
-                晉升條件：平均評分 >= 4.0 ｜ 無營運異常 ｜ 外籍生中文 A2
+            <div class="mt-4 p-4 bg-green-50 rounded-xl text-green-800 font-bold border border-green-200 text-center text-lg">
+                晉升條件：平均評分 ≥ 4.0 ｜ 無營運異常 ｜ 外籍生中文 A2
             </div>
         </section>
 
@@ -109,8 +113,8 @@
             <div class="score-box"><b>3. 餐點追蹤：</b>注意內場進度，延遲逾 20 分鐘主動回報主管。</div>
             <div class="score-box"><b>4. 團隊合作：</b>忙碌即時支援他區、非自己區域能主動補位。</div>
             <div class="score-box"><b>5. 溝通態度：</b>能即時回報異常狀況，表達清楚且語氣穩定。</div>
-            <div class="mt-4 p-4 bg-blue-50 rounded-xl text-blue-800 text-sm font-bold border border-blue-200 text-center text-lg">
-                晉升條件：平均評分 >= 4.25 ｜ 穩定帶新人 ｜ 外籍生中文 B2
+            <div class="mt-4 p-4 bg-blue-50 rounded-xl text-blue-800 font-bold border border-blue-200 text-center text-lg">
+                晉升條件：平均評分 ≥ 4.25 ｜ 穩定帶新人 ｜ 外籍生中文 B2
             </div>
         </section>
 
@@ -127,7 +131,7 @@
             <div class="score-box"><b>3. 溝通與態度：</b>遇突發狀況冷靜安撫顧客，語氣穩定明確。</div>
             <div class="score-box"><b>4. 櫃檯應對：</b>獨立完成結帳、外帶與電話訂位，紀錄正確。</div>
             <div class="score-box"><b>5. 責任感：</b>無臨時缺班，能於他人請假時主動遞補。</div>
-            <div class="mt-4 p-4 bg-red-50 rounded-xl text-red-800 text-lg font-bold border border-red-200 text-center italic text-red-700">
+            <div class="mt-4 p-4 bg-red-50 rounded-xl text-red-800 font-bold border border-red-200 text-center italic text-lg text-red-700">
                 維持條件：平均評分低於 3.75 或 未達保障時數 進入觀察期
             </div>
         </section>
