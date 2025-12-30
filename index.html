@@ -24,7 +24,7 @@
 
         .hero-header {
             background: #ffffff;
-            padding: 100px 24px 120px;
+            padding: 80px 24px 60px;
             text-align: center;
         }
         .hero-title {
@@ -38,7 +38,60 @@
             font-size: 1.2rem;
             color: var(--text-muted);
             font-weight: 500;
-            margin-bottom: 4rem;
+            margin-bottom: 3rem;
+        }
+
+        /* 導覽切換按鈕樣式 */
+        .tab-container {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 40px;
+        }
+        .tab-btn {
+            padding: 12px 32px;
+            border-radius: 50px;
+            font-weight: 800;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        .tab-btn.active {
+            background-color: var(--brand-red);
+            color: white;
+            box-shadow: 0 4px 15px rgba(178, 31, 44, 0.3);
+        }
+        .tab-btn.inactive {
+            background-color: white;
+            color: var(--text-muted);
+            border-color: #EEF2F7;
+        }
+        .tab-btn.inactive:hover {
+            border-color: var(--brand-red);
+            color: var(--brand-red);
+        }
+
+        /* 內容顯示控制 */
+        .content-section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        .content-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 施工中樣式 */
+        .coming-soon-box {
+            text-align: center;
+            padding: 100px 24px;
+            background: white;
+            border-radius: 24px;
+            border: 2px dashed #CBD5E0;
         }
 
         .standard-card {
@@ -82,7 +135,7 @@
 
         .level-container {
             max-width: 1150px;
-            margin: -60px auto 100px;
+            margin: 0 auto 100px;
             padding: 0 24px;
         }
         .level-box {
@@ -112,6 +165,15 @@
         <h1 class="hero-title">魚鮮會社夥伴職能地圖</h1>
         <p class="hero-subtitle">讓每一分努力，都能轉化為帶得走的專業實力</p>
         
+        <div class="tab-container">
+            <div id="tab-front" class="tab-btn active" onclick="switchTab('front')">
+                <i class="fa-solid fa-utensils mr-2"></i>外場職能
+            </div>
+            <div id="tab-back" class="tab-btn inactive" onclick="switchTab('back')">
+                <i class="fa-solid fa-fire-burner mr-2"></i>內場職能
+            </div>
+        </div>
+
         <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-16 text-left px-8">
             <div class="border-t-2 border-red-100 pt-6">
                 <h4 class="font-black text-xl mb-3 text-brand-red">透明化發展路徑</h4>
@@ -130,95 +192,113 @@
 
     <div class="level-container">
         
-        <section class="level-box">
-            <div class="level-top flex justify-between items-center" style="border-top: 8px solid var(--brand-red);">
-                <div>
-                    <h2 class="text-3xl font-black text-slate-800">Level 1：建立服務習慣</h2>
-                    <p class="text-slate-400 font-bold mt-2">150H 評核 ｜ 未過每 100H 覆核一次</p>
+        <div id="front-house-content" class="content-section active">
+            <section class="level-box">
+                <div class="level-top flex justify-between items-center" style="border-top: 8px solid var(--brand-red);">
+                    <div>
+                        <h2 class="text-3xl font-black text-slate-800">Level 1：建立服務習慣</h2>
+                        <p class="text-slate-400 font-bold mt-2">150H 評核 ｜ 未過每 100H 覆核一次</p>
+                    </div>
+                    <div class="text-4xl font-black text-brand-gold">$200<span class="text-xl font-normal text-slate-300">/hr</span></div>
                 </div>
-                <div class="text-4xl font-black text-brand-gold">$200<span class="text-xl font-normal text-slate-300">/hr</span></div>
-            </div>
-            <div class="p-10 grid grid-cols-1 md:grid-cols-3 gap-10">
-                <div class="md:col-span-2">
-                    <div class="standard-card"><div class="standard-content"><span class="standard-label">基本禮儀</span><span class="standard-desc">主動問候、儀態整潔</span></div><span class="score-hint">5: 全程主動 ｜ 1: 冷淡無問候</span></div>
-                    <div class="standard-card"><div class="standard-content"><span class="standard-label">外場流程</span><span class="standard-desc">執行倒茶、收桌、Set桌 SOP</span></div><span class="score-hint">5: 俐落主動 ｜ 1: 多次遺漏</span></div>
-                    <div class="standard-card"><div class="standard-content"><span class="standard-label">出勤信任</span><span class="standard-desc">準時到班、準備就緒</span></div><span class="score-hint">5: 全期準時 ｜ 1: 多次遲到</span></div>
-                    <div class="standard-card"><div class="standard-content"><span class="standard-label">團隊支援</span><span class="standard-desc">主動協助收送餐、立即行動</span></div><span class="score-hint">5: 反應迅速 ｜ 1: 拒絕消極</span></div>
-                    <div class="standard-card"><div class="standard-content"><span class="standard-label">清潔整理</span><span class="standard-desc">完成區域清潔與備品整理</span></div><span class="score-hint">5: 離桌即收 ｜ 1: 未達標</span></div>
-                </div>
-                <div class="sidebar-box">
-                    <h5 class="text-brand-red font-black mb-6">晉升 L2 條件</h5>
-                    <ul class="space-y-4 text-base font-bold text-slate-600">
-                        <li>● 平均評分 ≥ 4.0</li>
-                        <li>● 無營運異常紀錄</li>
-                        <li>● 外籍生中文 A2 通過</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <section class="level-box">
-            <div class="level-top flex justify-between items-center" style="border-top: 8px solid var(--brand-gold);">
-                <div>
-                    <h2 class="text-3xl font-black text-slate-800">Level 2：穩定支援與協調</h2>
-                    <p class="text-slate-400 font-bold mt-2">300H 評核 ｜ 未過每 150H 覆核一次</p>
-                    <span class="mt-4 px-4 py-2 bg-yellow-50 text-brand-gold rounded-full text-base font-black inline-block border border-yellow-200 shadow-sm">月標準時數：75H</span>
-                </div>
-                <div class="text-4xl font-black text-brand-gold">$220<span class="text-xl font-normal text-slate-300">/hr</span></div>
-            </div>
-            <div class="p-10 grid grid-cols-1 md:grid-cols-3 gap-10">
-                <div class="md:col-span-2">
-                    <div class="standard-card"><div class="standard-content"><span class="standard-label">流程掌握</span><span class="standard-desc">調整收送順序、保持現場流暢</span></div><span class="score-hint">5: 自主調整 ｜ 1: 動線混亂</span></div>
-                    <div class="standard-card"><div class="standard-content"><span class="standard-label">顧客服務</span><span class="standard-desc">預判需求、主動續湯、道謝</span></div><span class="score-hint">5: 持續主動 ｜ 1: 提醒才動</span></div>
-                    <div class="standard-card"><div class="standard-content"><span class="standard-label">餐點追蹤</span><span class="standard-desc">監控出餐逾 20 分鐘即時回報</span></div><span class="score-hint">5: 主動監控 ｜ 1: 未追蹤</span></div>
-                    <div class="standard-card"><div class="standard-content"><span class="standard-label">團隊合作</span><span class="standard-desc">即時補位支援、非己區亦助</span></div><span class="score-hint">5: 主動補位 ｜ 1: 不支援</span></div>
-                    <div class="standard-card"><div class="standard-content"><span class="standard-label">溝通態度</span><span class="standard-desc">回報清晰、表達語氣冷靜穩定</span></div><span class="score-hint">5: 清楚冷靜 ｜ 1: 語氣欠佳</span></div>
-                </div>
-                <div class="sidebar-box">
-                    <h5 class="text-brand-gold font-black mb-6">維持與晉升條件</h5>
-                    <ul class="space-y-4 text-base font-bold text-slate-600">
-                        <li>● 平均評分 ≥ 4.25 (晉升L3)</li>
-                        <li class="text-brand-red">● 連續兩月未達標準時數則降級</li>
-                        <li>● 三期內無營運異常紀錄</li>
-                        <li>● 外籍生中文 B2 通過</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <section class="level-box" style="border: 2px solid var(--brand-gold);">
-            <div class="level-top flex justify-between items-center" style="border-top: 8px solid #1A202C; background: #FAFAFA;">
-                <div>
-                    <h2 class="text-3xl font-black text-slate-800">Level 3：核心夥伴</h2>
-                    <p class="text-slate-400 font-bold mt-2">600H 評核 ｜ 每 300H 定期覆核</p>
-                    <span class="mt-4 px-4 py-2 bg-slate-800 text-white rounded-full text-base font-black inline-block shadow-md">月標準時數：100H</span>
-                </div>
-                <div class="text-4xl font-black text-brand-gold">$250<span class="text-xl font-normal text-slate-300">/hr</span></div>
-            </div>
-            <div class="p-10 grid grid-cols-1 md:grid-cols-3 gap-10">
-                <div class="md:col-span-2">
-                    <div class="standard-card"><div class="standard-content"><span class="standard-label">資訊掌握</span><span class="standard-desc">觀察出單、主動管理顧客預期</span></div><span class="score-hint">5: 即時傳遞 ｜ 1: 資訊錯誤</span></div>
-                    <div class="standard-card"><div class="standard-content"><span class="standard-label">團隊協調</span><span class="standard-desc">明確分配任務、穩定現場節奏</span></div><span class="score-hint">5: 現場順暢 ｜ 1: 分工不清</span></div>
-                    <div class="standard-card"><div class="standard-content"><span class="standard-label">溝通態度</span><span class="standard-desc">遇狀況冷靜安撫、語氣穩定</span></div><span class="score-hint">5: 安撫有效 ｜ 1: 情緒急躁</span></div>
-                    <div class="standard-card"><div class="standard-content"><span class="standard-label">櫃檯應對</span><span class="standard-desc">獨立結帳、電話訂位正確無誤</span></div><span class="score-hint">5: 正確流暢 ｜ 1: 多次錯誤</span></div>
-                    <div class="standard-card"><div class="standard-content"><span class="standard-label">責任感</span><span class="standard-desc">無臨缺、主動承擔他人遞補</span></div><span class="score-hint">5: 穩定可靠 ｜ 1: 拒絕配合</span></div>
-                </div>
-                <div class="sidebar-box" style="background: #FFFBEB;">
-                    <h5 class="text-slate-800 font-black mb-6">維持資格</h5>
-                    <ul class="space-y-4 text-base font-bold text-slate-600">
-                        <li class="text-brand-red">● 平均評分 < 3.75 進入觀察期</li>
-                        <li class="text-brand-red">● 連續兩月未達標準時數則降級</li>
-                        <li>● 一個月未改善將降級至 L2</li>
-                        <li>● 發生重大異常立即評估</li>
-                    </ul>
-                    <div class="mt-8 pt-6 border-t border-yellow-200">
-                        <p class="text-xs text-slate-500 font-bold leading-relaxed">
-                            ＊被列入觀察期：一個月後重新覆核一次，未達 3.75 分則降級。
-                        </p>
+                <div class="p-10 grid grid-cols-1 md:grid-cols-3 gap-10">
+                    <div class="md:col-span-2">
+                        <div class="standard-card"><div class="standard-content"><span class="standard-label">基本禮儀</span><span class="standard-desc">主動問候、儀態整潔</span></div><span class="score-hint">5: 全程主動 ｜ 1: 冷淡無問候</span></div>
+                        <div class="standard-card"><div class="standard-content"><span class="standard-label">外場流程</span><span class="standard-desc">執行倒茶、收桌、Set桌 SOP</span></div><span class="score-hint">5: 俐落主動 ｜ 1: 多次遺漏</span></div>
+                        <div class="standard-card"><div class="standard-content"><span class="standard-label">出勤信任</span><span class="standard-desc">準時到班、準備就緒</span></div><span class="score-hint">5: 全期準時 ｜ 1: 多次遲到</span></div>
+                        <div class="standard-card"><div class="standard-content"><span class="standard-label">團隊支援</span><span class="standard-desc">主動協助收送餐、立即行動</span></div><span class="score-hint">5: 反應迅速 ｜ 1: 拒絕消極</span></div>
+                        <div class="standard-card"><div class="standard-content"><span class="standard-label">清潔整理</span><span class="standard-desc">完成區域清潔與備品整理</span></div><span class="score-hint">5: 離桌即收 ｜ 1: 未達標</span></div>
+                    </div>
+                    <div class="sidebar-box">
+                        <h5 class="text-brand-red font-black mb-6">晉升 L2 條件</h5>
+                        <ul class="space-y-4 text-base font-bold text-slate-600">
+                            <li>● 平均評分 ≥ 4.0</li>
+                            <li>● 無營運異常紀錄</li>
+                            <li>● 外籍生中文 A2 通過</li>
+                        </ul>
                     </div>
                 </div>
+            </section>
+
+            <section class="level-box">
+                <div class="level-top flex justify-between items-center" style="border-top: 8px solid var(--brand-gold);">
+                    <div>
+                        <h2 class="text-3xl font-black text-slate-800">Level 2：穩定支援與協調</h2>
+                        <p class="text-slate-400 font-bold mt-2">300H 評核 ｜ 未過每 150H 覆核一次</p>
+                        <span class="mt-4 px-4 py-2 bg-yellow-50 text-brand-gold rounded-full text-base font-black inline-block border border-yellow-200 shadow-sm">月標準時數：75H</span>
+                    </div>
+                    <div class="text-4xl font-black text-brand-gold">$220<span class="text-xl font-normal text-slate-300">/hr</span></div>
+                </div>
+                <div class="p-10 grid grid-cols-1 md:grid-cols-3 gap-10">
+                    <div class="md:col-span-2">
+                        <div class="standard-card"><div class="standard-content"><span class="standard-label">流程掌握</span><span class="standard-desc">調整收送順序、保持現場流暢</span></div><span class="score-hint">5: 自主調整 ｜ 1: 動線混亂</span></div>
+                        <div class="standard-card"><div class="standard-content"><span class="standard-label">顧客服務</span><span class="standard-desc">預判需求、主動續湯、道謝</span></div><span class="score-hint">5: 持續主動 ｜ 1: 提醒才動</span></div>
+                        <div class="standard-card"><div class="standard-content"><span class="standard-label">餐點追蹤</span><span class="standard-desc">監控出餐逾 20 分鐘即時回報</span></div><span class="score-hint">5: 主動監控 ｜ 1: 未追蹤</span></div>
+                        <div class="standard-card"><div class="standard-content"><span class="standard-label">團隊合作</span><span class="standard-desc">即時補位支援、非己區亦助</span></div><span class="score-hint">5: 主動補位 ｜ 1: 不支援</span></div>
+                        <div class="standard-card"><div class="standard-content"><span class="standard-label">溝通態度</span><span class="standard-desc">回報清晰、表達語氣冷靜穩定</span></div><span class="score-hint">5: 清楚冷靜 ｜ 1: 語氣欠佳</span></div>
+                    </div>
+                    <div class="sidebar-box">
+                        <h5 class="text-brand-gold font-black mb-6">維持與晉升條件</h5>
+                        <ul class="space-y-4 text-base font-bold text-slate-600">
+                            <li>● 平均評分 ≥ 4.25 (晉升L3)</li>
+                            <li class="text-brand-red">● 連續兩月未達標準時數則降級</li>
+                            <li>● 三期內無營運異常紀錄</li>
+                            <li>● 外籍生中文 B2 通過</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section class="level-box" style="border: 2px solid var(--brand-gold);">
+                <div class="level-top flex justify-between items-center" style="border-top: 8px solid #1A202C; background: #FAFAFA;">
+                    <div>
+                        <h2 class="text-3xl font-black text-slate-800">Level 3：核心夥伴</h2>
+                        <p class="text-slate-400 font-bold mt-2">600H 評核 ｜ 每 300H 定期覆核</p>
+                        <span class="mt-4 px-4 py-2 bg-slate-800 text-white rounded-full text-base font-black inline-block shadow-md">月標準時數：100H</span>
+                    </div>
+                    <div class="text-4xl font-black text-brand-gold">$250<span class="text-xl font-normal text-slate-300">/hr</span></div>
+                </div>
+                <div class="p-10 grid grid-cols-1 md:grid-cols-3 gap-10">
+                    <div class="md:col-span-2">
+                        <div class="standard-card"><div class="standard-content"><span class="standard-label">資訊掌握</span><span class="standard-desc">觀察出單、主動管理顧客預期</span></div><span class="score-hint">5: 即時傳遞 ｜ 1: 資訊錯誤</span></div>
+                        <div class="standard-card"><div class="standard-content"><span class="standard-label">團隊協調</span><span class="standard-desc">明確分配任務、穩定現場節奏</span></div><span class="score-hint">5: 現場順暢 ｜ 1: 分工不清</span></div>
+                        <div class="standard-card"><div class="standard-content"><span class="standard-label">溝通態度</span><span class="standard-desc">遇狀況冷靜安撫、語氣穩定</span></div><span class="score-hint">5: 安撫有效 ｜ 1: 情緒急躁</span></div>
+                        <div class="standard-card"><div class="standard-content"><span class="standard-label">櫃檯應對</span><span class="standard-desc">獨立結帳、電話訂位正確無誤</span></div><span class="score-hint">5: 正確流暢 ｜ 1: 多次錯誤</span></div>
+                        <div class="standard-card"><div class="standard-content"><span class="standard-label">責任感</span><span class="standard-desc">無臨缺、主動承擔他人遞補</span></div><span class="score-hint">5: 穩定可靠 ｜ 1: 拒絕配合</span></div>
+                    </div>
+                    <div class="sidebar-box" style="background: #FFFBEB;">
+                        <h5 class="text-slate-800 font-black mb-6">維持資格</h5>
+                        <ul class="space-y-4 text-base font-bold text-slate-600">
+                            <li class="text-brand-red">● 平均評分 < 3.75 進入觀察期</li>
+                            <li class="text-brand-red">● 連續兩月未達標準時數則降級</li>
+                            <li>● 一個月未改善將降級至 L2</li>
+                            <li>● 發生重大異常立即評估</li>
+                        </ul>
+                        <div class="mt-8 pt-6 border-t border-yellow-200">
+                            <p class="text-xs text-slate-500 font-bold leading-relaxed">
+                                ＊被列入觀察期：一個月後重新覆核一次，未達 3.75 分則降級。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div id="back-house-content" class="content-section">
+            <div class="coming-soon-box">
+                <div class="text-brand-gold mb-6 text-6xl">
+                    <i class="fa-solid fa-screwdriver-wrench"></i>
+                </div>
+                <h3 class="text-3xl font-black text-slate-800 mb-4">內場職能地圖・建置中</h3>
+                <p class="text-slate-500 font-medium max-w-lg mx-auto">
+                    我們正在為內場夥伴量身打造專屬的成長路徑。包含刀工規範、出餐節奏、食材管理等核心職能，敬請期待更專業的晉升系統！
+                </p>
+                <div class="mt-10">
+                    <span class="px-6 py-2 bg-slate-100 text-slate-400 rounded-full font-black text-sm uppercase tracking-widest">Coming Soon 2026</span>
+                </div>
             </div>
-        </section>
+        </div>
+
     </div>
 
     <footer class="bg-slate-900 text-white py-20 px-6 text-center">
@@ -236,6 +316,41 @@
             © 2025 魚鮮會社 GYOSEN 內部管理文件
         </div>
     </footer>
+
+    <script>
+        function switchTab(type) {
+            // 取得元素
+            const frontBtn = document.getElementById('tab-front');
+            const backBtn = document.getElementById('tab-back');
+            const frontContent = document.getElementById('front-house-content');
+            const backContent = document.getElementById('back-house-content');
+
+            if (type === 'front') {
+                // 更新按鈕狀態
+                frontBtn.classList.add('active');
+                frontBtn.classList.remove('inactive');
+                backBtn.classList.add('inactive');
+                backBtn.classList.remove('active');
+                
+                // 更新內容顯示
+                frontContent.classList.add('active');
+                backContent.classList.remove('active');
+            } else {
+                // 更新按鈕狀態
+                backBtn.classList.add('active');
+                backBtn.classList.remove('inactive');
+                frontBtn.classList.add('inactive');
+                frontBtn.classList.remove('active');
+                
+                // 更新內容顯示
+                backContent.classList.add('active');
+                frontContent.classList.remove('active');
+            }
+            
+            // 切換後自動滾動到內容頂部
+            window.scrollTo({ top: 300, behavior: 'smooth' });
+        }
+    </script>
 
 </body>
 </html>
