@@ -156,7 +156,7 @@
             box-shadow: 0 20px 40px rgba(26, 32, 44, 0.08) !important;
         }
 
-        /* 職能條目排版優化 */
+        /* 職能條目排版優化：解決文字隱藏問題 */
         .standard-card {
             background: #ffffff;
             border-radius: 12px;
@@ -165,39 +165,38 @@
             border: 1px solid #EEF2F7;
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 10px;
             transition: all 0.2s ease;
         }
         .standard-card:hover { border-color: #CBD5E0; background: #FBFCFE; }
         
         .standard-header { 
             display: flex; 
-            align-items: center; 
-            justify-content: flex-start;
-            gap: 12px; 
-            flex-wrap: nowrap; /* 確保不換行 */
+            align-items: baseline; 
+            gap: 15px; 
         }
         .standard-label { 
             font-weight: 800; 
             color: #1A202C; 
             min-width: 95px; 
-            font-size: 1.25rem; /* 手機版標題大一點 */
+            font-size: 1.2rem; 
             flex-shrink: 0;
         }
         .standard-desc { 
             color: #4A5568; 
-            font-weight: 500; 
+            font-weight: 600; 
             font-size: 1.05rem; 
-            white-space: nowrap; /* 盡量在一行 */
-            overflow: hidden;
-            text-overflow: ellipsis;
+            line-height: 1.5;
+            /* 移除 white-space: nowrap，讓文字自然換行 */
         }
         .score-hint { 
             font-size: 0.85rem; 
             color: var(--text-muted); 
             font-weight: 400; 
-            line-height: 1.4; 
+            line-height: 1.5; 
             padding-left: 2px;
+            border-top: 1px solid #F8FAFC;
+            padding-top: 8px;
         }
 
         .sidebar-box { background: #F8FAFC; padding: 25px; border-radius: 20px; height: fit-content; }
@@ -205,10 +204,12 @@
         @media (max-width: 767px) {
             .level-top { flex-direction: column; align-items: flex-start; gap: 15px; }
             .level-top .text-4xl { font-size: 2rem; }
-            .standard-card { padding: 16px; }
+            .standard-card { padding: 18px; }
             .sidebar-box { margin-top: 20px; }
-            .standard-label { min-width: 85px; font-size: 1.15rem; }
-            .standard-desc { font-size: 0.95rem; }
+            /* 手機版讓標題與描述垂直對齊但保持層次感 */
+            .standard-header { gap: 10px; }
+            .standard-label { min-width: 80px; font-size: 1.15rem; }
+            .standard-desc { font-size: 1rem; }
         }
     </style>
 </head>
