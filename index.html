@@ -25,7 +25,7 @@
         /* --- Header 視覺優化 --- */
         .hero-header {
             background: #ffffff;
-            padding: 80px 20px 140px; 
+            padding: 80px 20px 140px; /* 增加底部內距，為懸浮卡片預留空間 */
             text-align: center;
         }
         .hero-title {
@@ -47,7 +47,7 @@
             background: white;
             border-radius: 28px;
             padding: clamp(24px, 5vw, 48px);
-            margin-top: -80px; 
+            margin-top: -80px; /* 關鍵：負邊距產生重疊懸浮感 */
             margin-bottom: 50px;
             box-shadow: 0 20px 50px rgba(0,0,0,0.06);
             border: 1px solid #edf2f7;
@@ -320,12 +320,8 @@
                 <p class="text-slate-400 text-sm leading-relaxed">致營運中斷、顧客正式投訴或對同仁造成重大工作壓力。凡成立將立即啟動降級評估與覆核機制。</p>
             </div>
         </div>
-
-        <div class="flex flex-col items-center border-t border-slate-800 pt-10 px-4">
-            <img src="logo.png" alt="魚鮮會社 Logo" class="h-200 mb-6 opacity-90 object-contain">
-            <div class="text-slate-500 text-[10px] font-bold tracking-widest uppercase">
-                © 2025 魚鮮會社 GYOSEN 內部管理文件
-            </div>
+        <div class="text-slate-500 text-[10px] font-bold tracking-widest uppercase px-4 border-t border-slate-800 pt-8">
+            © 2025 魚鮮會社 GYOSEN 內部管理文件
         </div>
     </footer>
 
