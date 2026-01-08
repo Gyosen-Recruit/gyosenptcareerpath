@@ -207,7 +207,10 @@
                 timeDisplay.innerText = '更新時間：' + now.toLocaleString('zh-TW', { hour: '2-digit', minute: '2-digit' });
             }
 
-            Papa.parse(csvUrl, {
+            // 加入時間戳記，強制每次都抓最新的資料 (解決延遲問題)
+            const freshCsvUrl = csvUrl + "&nocache=" + Date.now();
+
+            Papa.parse(freshCsvUrl, {
                 download: true,
                 header: true, 
                 skipEmptyLines: true,
@@ -231,7 +234,7 @@
             });
         }
 
-        // ▼▼▼ 更新後的 renderTable (L2/L3 有顏色變化，無 Emoji) ▼▼▼
+        // ▼▼▼ renderTable (已更新 L3 為實心金底白字，解決不清楚問題) ▼▼▼
         function renderTable(data) {
             const container = document.getElementById('data-container');
             if(!container) return;
@@ -265,15 +268,15 @@
                 const hours = row[colHours] || '0';
                 const status = row[colStatus] || '-';
                 
-                // --- 定義樣式 ---
+                // --- 定義樣式 (L3金, L2藍, 無Emoji) ---
                 let rowClass = "hover:bg-slate-50 transition-colors bg-white"; // 預設 L1
                 let levelBadgeClass = "bg-slate-100 text-slate-500 border-slate-200"; 
                 let nameColorClass = "text-slate-700"; 
 
-                // L3 樣式 (修正為：實心金底 + 白字，解決不清楚的問題)
+                // L3 樣式 (實心金底 + 白字)
                 if (level === 'L3') {
                     rowClass = "bg-amber-50/60 hover:bg-amber-100 transition-colors border-l-4 border-l-[#B29A1F]"; 
-                    // 改成 #B29A1F 底色配白字，這跟 L2 的設計語言一致，且最清楚
+                    // 改為 #B29A1F 底色 + 白字，確保清晰
                     levelBadgeClass = "bg-[#B29A1F] text-white border-[#B29A1F] shadow-sm"; 
                     nameColorClass = "text-slate-900"; 
                 } 
@@ -323,10 +326,6 @@
                     html += `<tr><td colspan="4" class="px-6 py-12 text-center text-slate-400 bg-white">
                     表格中沒有有效的人員資料</td></tr>`;
             }
-
-            html += `</tbody></table>`;
-            container.innerHTML = html;
-        }
 
             html += `</tbody></table>`;
             container.innerHTML = html;
