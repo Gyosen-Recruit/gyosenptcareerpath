@@ -168,15 +168,12 @@
             const bContent = document.getElementById('back-house-content');
             const dContent = document.getElementById('dashboard-content');
             
-            // 時間軸區塊 (Dashboard 時隱藏)
             const timeline = document.getElementById('common-timeline');
 
-            // 重置所有按鈕樣式
             fBtn.className = 'tab-btn inactive';
             bBtn.className = 'tab-btn inactive';
             dBtn.className = 'tab-btn inactive';
             
-            // 重置所有內容區塊
             fContent.className = 'content-section';
             bContent.className = 'content-section';
             dContent.className = 'content-section';
@@ -190,24 +187,56 @@
                 bContent.className = 'content-section active';
                 timeline.style.display = 'block';
             } else if (type === 'dash') {
-                dBtn.className = 'tab-btn dashboard-active'; // 使用金色樣式
+                dBtn.className = 'tab-btn dashboard-active'; 
                 dContent.className = 'content-section active';
-                timeline.style.display = 'none'; // 隱藏時間軸
+                timeline.style.display = 'none'; 
             }
         }
 
-        // --- Dashboard 邏輯區 (整合過來的) ---
+        // --- Dashboard 邏輯 (支援招募模式) ---
         function initDashboard() {
-            // 避免重複執行
             if (isDashboardLoaded) return; 
+
+            // ★ 偵測網址參數，如果有 ?demo=1 則進入招募模式
+            const urlParams = new URLSearchParams(window.location.search);
+            const isRecruitmentMode = urlParams.get('demo') === '1';
 
             const now = new Date();
             const timeDisplay = document.getElementById('last-update');
+            const loader = document.getElementById('loader');
+            const container = document.getElementById('data-container');
+
             if(timeDisplay) {
                 timeDisplay.innerText = '更新時間：' + now.toLocaleString('zh-TW', { hour: '2-digit', minute: '2-digit' });
             }
 
-            // 加入時間戳記，強制每次都抓最新的資料 (解決延遲問題)
+            // --- 情境 A：招募/展示模式 (顯示範例假資料) ---
+            if (isRecruitmentMode) {
+                // 設定完美的範例資料
+                const demoData = [
+                    { "姓名": "新進夥伴 (範例)", "等級": "L1", "本職級累積時數": "45", "狀態": "累積中" },
+                    { "姓名": "資深夥伴 (範例)", "等級": "L2", "本職級累積時數": "295", "狀態": "可考核" }, // L2 藍色
+                    { "姓名": "核心幹部 (範例)", "等級": "L3", "本職級累積時數": "120", "狀態": "累積中" }, // L3 金色
+                    { "姓名": "儲備幹部 (範例)", "等級": "L2", "本職級累積時數": "150", "狀態": "覆核中" }, // 覆核狀態
+                    { "姓名": "L1 夥伴 (範例)", "等級": "L1", "本職級累積時數": "155", "狀態": "需評核" }  // 可晉升
+                ];
+
+                // 渲染範例表格
+                renderTable(demoData);
+                
+                if(loader) loader.style.display = 'none';
+                if(container) container.classList.remove('opacity-0');
+                
+                // 加上醒目的提示字樣
+                if(timeDisplay) {
+                    timeDisplay.innerHTML += ' <span class="bg-[#B29A1F] text-white px-2 py-0.5 rounded text-xs ml-2 font-bold">招募展示模式</span>';
+                }
+                
+                isDashboardLoaded = true;
+                return; // 直接結束，不去連線 Google Sheet
+            }
+
+            // --- 情境 B：正常內部模式 (連線真實資料) ---
             const freshCsvUrl = csvUrl + "&nocache=" + Date.now();
 
             Papa.parse(freshCsvUrl, {
@@ -215,9 +244,6 @@
                 header: true, 
                 skipEmptyLines: true,
                 complete: function(results) {
-                    const loader = document.getElementById('loader');
-                    const container = document.getElementById('data-container');
-                    
                     if (results.data && results.data.length > 0) {
                         renderTable(results.data);
                         if(loader) loader.style.display = 'none';
@@ -234,7 +260,7 @@
             });
         }
 
-        // ▼▼▼ renderTable (已更新 L3 為實心金底白字，解決不清楚問題) ▼▼▼
+        // ▼▼▼ renderTable (L3 金底白字 + 無 Emoji) ▼▼▼
         function renderTable(data) {
             const container = document.getElementById('data-container');
             if(!container) return;
@@ -276,7 +302,6 @@
                 // L3 樣式 (實心金底 + 白字)
                 if (level === 'L3') {
                     rowClass = "bg-amber-50/60 hover:bg-amber-100 transition-colors border-l-4 border-l-[#B29A1F]"; 
-                    // 改為 #B29A1F 底色 + 白字，確保清晰
                     levelBadgeClass = "bg-[#B29A1F] text-white border-[#B29A1F] shadow-sm"; 
                     nameColorClass = "text-slate-900"; 
                 } 
