@@ -1,4 +1,127 @@
-<script>
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>魚鮮會社夥伴職能地圖</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --brand-red: #B21F2C; --brand-gold: #B29A1F; --brand-blue: #3B82F6; --ui-gray: #F8F9FA; --text-main: #2D3436; --text-muted: #94A3B8; --level3-dark-gray: #334155; }
+        body { background-color: var(--ui-gray); color: var(--text-main); font-size: 1.1rem; font-family: "PingFang TC", "Microsoft JhengHei", sans-serif; line-height: 1.7; }
+        .loading-spinner { animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        /* header 與排版 */
+        .hero-header { background: #ffffff; padding: 60px 20px 40px; text-align: center; }
+        .hero-title { font-size: clamp(2.2rem, 8vw, 3.5rem); font-weight: 900; letter-spacing: -0.02em; color: #1A202C; margin-bottom: 2rem; }
+        .timeline-container { background: white; border-radius: 28px; padding: 48px; margin-top: 20px; margin-bottom: 50px; box-shadow: 0 20px 50px rgba(0,0,0,0.06); border: 1px solid #edf2f7; position: relative; z-index: 10; }
+        .schedule-grid { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; }
+        .schedule-card { background: white; border-radius: 20px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; border: 1px solid #E2E8F0; padding: 20px; width: 220px; height: 160px; }
+        .step-label { font-size: 0.75rem; font-weight: 900; color: var(--text-muted); letter-spacing: 0.05em; margin-bottom: 8px; }
+        /* 分頁按鈕 */
+        .tab-container { display: flex; justify-content: center; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { flex: 1; min-width: 140px; max-width: 200px; padding: 14px 24px; border-radius: 50px; font-weight: 800; transition: all 0.3s ease; cursor: pointer; border: 2px solid transparent; text-align: center;}
+        .tab-btn.active { background-color: var(--brand-red); color: white; box-shadow: 0 4px 15px rgba(178, 31, 44, 0.3); }
+        .tab-btn.inactive { background-color: white; color: var(--text-muted); border-color: #EEF2F7; }
+        .tab-btn.dashboard-active { background-color: var(--brand-gold); color: white; box-shadow: 0 4px 15px rgba(178, 154, 31, 0.3); }
+        .content-section { display: none; }
+        .content-section.active { display: block; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        /* 外場/內場卡片樣式 */
+        .standard-card { background: #ffffff; border-radius: 12px; padding: 24px; margin-bottom: 18px; border: 1px solid #EEF2F7; }
+        .standard-title-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+        .standard-label { font-weight: 800; color: #1A202C; font-size: 1.2rem; flex-shrink: 0; padding-right: 15px; }
+        .standard-divider { height: 1px; flex-grow: 1; background: #E2E8F0; }
+        .standard-desc { color: #4A5568; font-weight: 600; font-size: 1.05rem; padding-left: 15px; text-align: right; }
+        .score-hint { font-size: 0.95rem; color: var(--text-muted); background: #F8FAFC; padding: 12px 16px; border-radius: 8px; margin-top: 12px; }
+        /* footer */
+        .footer-info { background: var(--level3-dark-gray); color: #CBD5E1; padding: 60px 20px; margin-top: 80px; }
+        .footer-info h4 { color: var(--brand-gold); font-weight: 900; margin-bottom: 1.5rem; font-size: 1.3rem; }
+        .footer-divider { height: 1px; background: #475569; margin: 40px 0; }
+        .footer-highlight { color: var(--brand-gold); font-weight: bold; }
+        .progress-bar-fill { transition: width 1s ease-in-out; }
+    </style>
+</head>
+<body>
+    <header class="hero-header">
+        <h1 class="hero-title">魚鮮會社夥伴職能地圖</h1>
+        <div class="tab-container">
+            <div id="tab-front" class="tab-btn active" onclick="switchTab('front')">外場服務</div>
+            <div id="tab-back" class="tab-btn inactive" onclick="switchTab('back')">內場實務</div>
+            <div id="tab-dash" class="tab-btn inactive" onclick="switchTab('dash')">時數儀表板(測試)</div>
+        </div>
+    </header>
+
+    <div class="max-w-[1150px] mx-auto px-4">
+        <div id="dashboard-controls" class="hidden mb-6">
+            <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex flex-col md:flex-row justify-between items-center gap-4">
+                <div class="relative w-full md:w-auto flex-1 max-w-md">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i class="fa-solid fa-magnifying-glass text-slate-400"></i>
+                    </div>
+                    <input type="text" id="searchInput" placeholder="搜尋姓名、等級 (例如: L3)..." 
+                        class="block w-full pl-10 pr-3 py-2 border border-slate-200 rounded-full leading-5 bg-slate-50 placeholder-slate-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-brand-gold focus:border-transparent transition duration-150 ease-in-out sm:text-sm"
+                        onkeyup="filterData()">
+                </div>
+                <div class="text-xs text-slate-400 text-right w-full md:w-auto">
+                    <div id="data-cutoff-display" class="font-bold text-slate-600 mb-1">統計截止日：載入中...</div>
+                    <div id="last-update">系統連線時間：載入中...</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="common-timeline" class="timeline-container">
+            <div class="schedule-grid">
+                <div class="schedule-card"><span class="step-label">Step 01</span><h5 class="font-black text-lg">時數結算</h5><p class="text-slate-400 font-bold">每月月底</p></div>
+                <div class="schedule-card" style="border-top: 6px solid var(--brand-red);"><span class="step-label" style="color:var(--brand-red)">Step 02</span><h5 class="font-black text-lg">評核面談</h5><p class="text-brand-red font-bold">次月 1 - 10 日</p></div>
+                <div class="schedule-card" style="border-top: 6px solid var(--brand-gold);"><span class="step-label" style="color:var(--brand-gold)">Step 03</span><h5 class="font-black text-lg">薪資生效</h5><p class="text-brand-gold font-bold">次月 1 日起</p></div>
+                <div class="schedule-card"><span class="step-label">Step 04</span><h5 class="font-black text-lg">領取加薪</h5><p class="text-slate-600 font-bold">次次月 5 日</p></div>
+            </div>
+            <div class="mt-8 bg-slate-50 p-6 rounded-2xl border border-slate-100">
+                <h6 class="text-sm font-black text-slate-800 mb-3"><i class="fa-solid fa-calendar-check mr-2"></i>2026 運作範例：</h6>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-sm text-slate-500">
+                    <div><span class="font-bold text-slate-700">1. 結算：</span>2026/01/31 時數達標</div>
+                    <div><span class="font-bold text-slate-700">2. 面談：</span>02/01 - 02/10 間評核</div>
+                    <div><span class="font-bold text-brand-red">3. 生效：</span>02/01 起調整時薪</div>
+                    <div><span class="font-bold text-brand-gold">4. 發薪：</span>03/05 領調整薪資</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="front-house-content" class="content-section active">
+            <div class="p-10 text-center"><i class="fas fa-circle-notch loading-spinner text-brand-gold mr-2"></i>正在載入外場資訊...</div>
+        </div>
+
+        <div id="back-house-content" class="content-section"></div>
+        
+        <div id="dashboard-content" class="content-section min-h-[400px] relative">
+            <div id="loader" class="absolute inset-0 flex flex-col items-center justify-center bg-white/80 z-20">
+                <i class="fas fa-circle-notch loading-spinner text-4xl text-brand-gold mb-4"></i>
+                <p class="text-slate-400 font-bold">正在讀取資料庫...</p>
+            </div>
+            <div id="data-container" class="opacity-0 transition-opacity duration-500"></div>
+        </div>
+    </div>
+
+    <footer class="footer-info">
+        <div class="max-w-[1150px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 text-left">
+            <div>
+                <h4><i class="fa-solid fa-eye mr-2"></i>什麼是「觀察期」？</h4>
+                <p class="leading-relaxed">指當月評分低於 <span class="footer-highlight">3.75</span> 或發生<span class="footer-highlight">嚴重事件</span>後，夥伴需進入為期一個月的重點輔導觀察期。期滿後將重新考核：若未通過將進行<span class="footer-highlight">職務降級</span>，通過則<span class="footer-highlight">維持原級</span>。</p>
+            </div>
+            <div>
+                <h4><i class="fa-solid fa-triangle-exclamation mr-2"></i>什麼是「營運異常」？</h4>
+                <p class="leading-relaxed">指因臨時請假、遲到、或現場失誤，造成團隊需臨時調整班表、出餐錯誤或影響顧客體驗的情況。<br><span class="text-slate-500 text-sm mt-2 block">(註：已提前協調完成調班，或因不可抗力並出示證明者不在此列)</span></p>
+            </div>
+        </div>
+        <div class="footer-divider"></div>
+        <div class="text-center text-xs text-slate-500 tracking-widest uppercase">
+            © 2026 魚鮮會社 PT 夥伴職能發展手冊 ｜ GYOSEN INTERNAL DOCUMENT
+        </div>
+    </footer>
+
+    <script>
         // ================= 設定區 =================
         const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSPKyIVGlT4rmWEOUPwSdccHGWEaGPF3QhMm0rXnh7g_0kJx9iXFzIGVoY_uWOUHN9La8KjZOp5BMAv/pub?gid=1617552127&single=true&output=csv';
         const DATA_CUTOFF_DATE = "2026/01/07"; 
@@ -270,13 +393,13 @@
                 let targetHours = 150; 
 
                 if (level === 'L3') {
-                    rowClass = "bg-amber-50 hover:bg-amber-100 transition-colors border-l-4 border-l-[#B29A1F]"; 
+                    rowClass = "bg-amber-50/60 hover:bg-amber-100 transition-colors border-l-4 border-l-[#B29A1F]"; 
                     levelBadgeClass = "bg-[#B29A1F] text-white border-[#B29A1F] shadow-sm"; 
                     nameColorClass = "text-slate-900"; 
                     progressBarColor = "bg-[#B29A1F]"; 
                     targetHours = 600;
                 } else if (level === 'L2') {
-                    rowClass = "bg-slate-50 hover:bg-blue-50 transition-colors border-l-4 border-l-blue-400"; 
+                    rowClass = "bg-slate-50/80 hover:bg-blue-50 transition-colors border-l-4 border-l-blue-400"; 
                     levelBadgeClass = "bg-blue-500 text-white border-blue-500 shadow-sm"; 
                     nameColorClass = "text-slate-800";
                     progressBarColor = "bg-[#3B82F6]"; 
@@ -352,3 +475,5 @@
             if(loader) loader.innerHTML = `<div class="text-center text-red-500 font-bold px-4"><i class="fas fa-exclamation-triangle text-3xl mb-3 block"></i>${msg}</div>`;
         }
     </script>
+</body>
+</html>
