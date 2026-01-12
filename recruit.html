@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>魚鮮會社夥伴職能地圖 (招募展示)</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'brand-red': '#dc2626',
+                        'brand-gold': '#d97706',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #f8fafc; font-family: system-ui, -apple-system, sans-serif; }
+    </style>
+</head>
+<body class="p-4 md:p-10 flex justify-center items-start min-h-screen">
+
+    <div class="w-full max-w-5xl">
+        
+        <header class="text-center mb-10">
+            <h1 class="text-3xl font-black text-slate-800 mb-3 tracking-wider">
+                魚鮮會社夥伴職能地圖
+            </h1>
+            <div class="inline-block bg-brand-gold/10 text-brand-gold px-4 py-1 rounded-full text-sm font-bold mb-4">
+                時數儀表板 (招募展示範例)
+            </div>
+        </header>
+
+        <div class="bg-white rounded-3xl shadow-xl border border-slate-100 overflow-hidden relative">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-slate-50 border-b border-slate-100 text-slate-500 text-sm uppercase tracking-wider">
+                            <th class="p-4 pl-6 font-bold text-center">職級 (Level)</th>
+                            <th class="p-4 font-bold">夥伴姓名</th>
+                            <th class="p-4 font-bold text-center">累積時數</th>
+                            <th class="p-4 font-bold text-center">下階段目標</th>
+                            <th class="p-4 font-bold text-center">目前狀態</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 text-slate-700 font-bold">
+                        
+                        <tr class="hover:bg-red-50 transition-colors bg-red-50/30">
+                            <td class="p-4 pl-6 text-center">
+                                <span class="bg-brand-red text-white px-3 py-1 rounded-full text-xs shadow-sm">Level 3</span>
+                            </td>
+                            <td class="p-4 flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-full bg-brand-red text-white flex items-center justify-center text-xs font-bold">王</div>
+                                <span>王Ｏ明 (店長範例)</span>
+                            </td>
+                            <td class="p-4 text-center font-mono text-brand-red text-lg">1,280 H</td>
+                            <td class="p-4 text-center text-xs text-slate-400">已達最高職級</td>
+                            <td class="p-4 text-center">
+                                <span class="text-brand-red text-xs border border-brand-red px-2 py-1 rounded bg-white">Core Partner</span>
+                            </td>
+                        </tr>
+
+                        <tr class="hover:bg-slate-50 transition-colors">
+                            <td class="p-4 pl-6 text-center">
+                                <span class="bg-brand-gold text-white px-3 py-1 rounded-full text-xs shadow-sm">Level 2</span>
+                            </td>
+                            <td class="p-4 flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-full bg-brand-gold text-white flex items-center justify-center text-xs font-bold">陳</div>
+                                <span>陳Ｏ豪 (資深範例)</span>
+                            </td>
+                            <td class="p-4 text-center font-mono text-slate-600">425 H</td>
+                            <td class="p-4 text-center text-xs text-slate-400">
+                                目標 450 H
+                                <div class="w-24 h-1.5 bg-slate-100 rounded-full mx-auto mt-1 overflow-hidden">
+                                    <div class="h-full bg-brand-gold" style="width: 94%"></div>
+                                </div>
+                            </td>
+                            <td class="p-4 text-center text-green-600 text-sm">
+                                <i class="fa-solid fa-arrow-trend-up mr-1"></i>即將晉升
+                            </td>
+                        </tr>
+
+                        <tr class="hover:bg-slate-50 transition-colors">
+                            <td class="p-4 pl-6 text-center">
+                                <span class="bg-slate-400 text-white px-3 py-1 rounded-full text-xs shadow-sm">Level 1</span>
+                            </td>
+                            <td class="p-4 flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center text-xs font-bold">林</div>
+                                <span>林Ｏ婷 (新人範例)</span>
+                            </td>
+                            <td class="p-4 text-center font-mono text-slate-600">86 H</td>
+                            <td class="p-4 text-center text-xs text-slate-400">
+                                目標 150 H
+                                <div class="w-24 h-1.5 bg-slate-100 rounded-full mx-auto mt-1 overflow-hidden">
+                                    <div class="h-full bg-slate-400" style="width: 57%"></div>
+                                </div>
+                            </td>
+                            <td class="p-4 text-center text-slate-400 text-sm">
+                                培訓中
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="mt-8 text-center border-t border-slate-200 pt-6">
+            <p class="text-xs text-slate-400 mb-2">
+                <i class="fa-solid fa-shield-halved mr-1"></i>隱私保護聲明
+            </p>
+            <p class="text-xs text-slate-400">
+                本頁面僅為招募系統功能展示，上述顯示之姓名、職級與數據均為虛構範例。<br>
+                實際員工資料僅限內部網路存取。
+            </p>
+        </div>
+
+    </div>
+
+</body>
+</html>
