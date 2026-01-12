@@ -8,53 +8,26 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { 
-            --brand-red: #B21F2C; 
-            --brand-gold: #B29A1F; 
-            --brand-blue: #3B82F6;
-            --ui-gray: #F8F9FA;
-            --text-main: #2D3436;
-            --text-muted: #94A3B8;
-            --level3-dark-gray: #334155; 
-        }
-        body { 
-            background-color: var(--ui-gray); 
-            color: var(--text-main); 
-            font-size: 1.1rem; 
-            font-family: "PingFang TC", "Microsoft JhengHei", sans-serif; 
-            line-height: 1.7; 
-        }
+        :root { --brand-red: #B21F2C; --brand-gold: #B29A1F; --brand-blue: #3B82F6; --ui-gray: #F8F9FA; --text-main: #2D3436; --text-muted: #94A3B8; --level3-dark-gray: #334155; }
+        body { background-color: var(--ui-gray); color: var(--text-main); font-size: 1.1rem; font-family: "PingFang TC", "Microsoft JhengHei", sans-serif; line-height: 1.7; }
         .loading-spinner { animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
         /* header 與排版 */
         .hero-header { background: #ffffff; padding: 60px 20px 40px; text-align: center; }
         .hero-title { font-size: clamp(2.2rem, 8vw, 3.5rem); font-weight: 900; letter-spacing: -0.02em; color: #1A202C; margin-bottom: 2rem; }
-        
-        .timeline-container {
-            background: white; border-radius: 28px; padding: 48px;
-            margin-top: 20px; margin-bottom: 50px; box-shadow: 0 20px 50px rgba(0,0,0,0.06);
-            border: 1px solid #edf2f7; position: relative; z-index: 10;
-        }
+        .timeline-container { background: white; border-radius: 28px; padding: 48px; margin-top: 20px; margin-bottom: 50px; box-shadow: 0 20px 50px rgba(0,0,0,0.06); border: 1px solid #edf2f7; position: relative; z-index: 10; }
         .schedule-grid { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; }
-        .schedule-card {
-            background: white; border-radius: 20px; display: flex; flex-direction: column;
-            justify-content: center; align-items: center; text-align: center;
-            border: 1px solid #E2E8F0; padding: 20px; width: 220px; height: 160px;
-        }
+        .schedule-card { background: white; border-radius: 20px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; border: 1px solid #E2E8F0; padding: 20px; width: 220px; height: 160px; }
         .step-label { font-size: 0.75rem; font-weight: 900; color: var(--text-muted); letter-spacing: 0.05em; margin-bottom: 8px; }
-        
         /* 分頁按鈕 */
         .tab-container { display: flex; justify-content: center; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
         .tab-btn { flex: 1; min-width: 140px; max-width: 200px; padding: 14px 24px; border-radius: 50px; font-weight: 800; transition: all 0.3s ease; cursor: pointer; border: 2px solid transparent; text-align: center;}
         .tab-btn.active { background-color: var(--brand-red); color: white; box-shadow: 0 4px 15px rgba(178, 31, 44, 0.3); }
         .tab-btn.inactive { background-color: white; color: var(--text-muted); border-color: #EEF2F7; }
         .tab-btn.dashboard-active { background-color: var(--brand-gold); color: white; box-shadow: 0 4px 15px rgba(178, 154, 31, 0.3); }
-
         .content-section { display: none; }
         .content-section.active { display: block; animation: fadeIn 0.5s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
         /* 外場/內場卡片樣式 */
         .standard-card { background: #ffffff; border-radius: 12px; padding: 24px; margin-bottom: 18px; border: 1px solid #EEF2F7; }
         .standard-title-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
@@ -62,7 +35,6 @@
         .standard-divider { height: 1px; flex-grow: 1; background: #E2E8F0; }
         .standard-desc { color: #4A5568; font-weight: 600; font-size: 1.05rem; padding-left: 15px; text-align: right; }
         .score-hint { font-size: 0.95rem; color: var(--text-muted); background: #F8FAFC; padding: 12px 16px; border-radius: 8px; margin-top: 12px; }
-        
         /* L3 黑金卡片專用樣式 */
         .level-box-premium { background: var(--level3-dark-gray) !important; border: 2px solid var(--brand-gold) !important; box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2) !important; position: relative; }
         .level-box-premium h2, .level-box-premium .premium-price { color: white !important; }
@@ -75,15 +47,11 @@
         .level-box-premium .sidebar-box { background: #475569 !important; color: #E2E8F0 !important; border: 1px solid #64748B; }
         .level-box-premium .sidebar-box h5 { color: var(--brand-gold) !important; }
         .premium-tag { position: absolute; top: -15px; right: 30px; background: var(--brand-gold); color: white; padding: 4px 16px; border-radius: 20px; font-size: 0.75rem; font-weight: 900; letter-spacing: 0.1em; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
-
         .sidebar-box { background: #F8FAFC; padding: 30px; border-radius: 20px; height: fit-content; }
-
         .footer-info { background: var(--level3-dark-gray); color: #CBD5E1; padding: 60px 20px; margin-top: 80px; }
         .footer-info h4 { color: var(--brand-gold); font-weight: 900; margin-bottom: 1.5rem; font-size: 1.3rem; }
         .footer-divider { height: 1px; background: #475569; margin: 40px 0; }
         .footer-highlight { color: var(--brand-gold); font-weight: bold; }
-
-        /* Dashboard 進度條動畫 */
         .progress-bar-fill { transition: width 1s ease-in-out; }
     </style>
 </head>
@@ -133,8 +101,11 @@
             </div>
         </div>
 
-        <div id="front-house-content" class="content-section active">載入中...</div>
-        <div id="back-house-content" class="content-section">載入中...</div>
+        <div id="front-house-content" class="content-section active">
+            <div class="p-10 text-center"><i class="fas fa-circle-notch loading-spinner text-brand-gold mr-2"></i>正在載入外場資訊...</div>
+        </div>
+
+        <div id="back-house-content" class="content-section"></div>
         
         <div id="dashboard-content" class="content-section min-h-[400px] relative">
             <div id="loader" class="absolute inset-0 flex flex-col items-center justify-center bg-white/80 z-20">
@@ -165,15 +136,13 @@
     <script>
         // ================= 設定區 =================
         const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSPKyIVGlT4rmWEOUPwSdccHGWEaGPF3QhMm0rXnh7g_0kJx9iXFzIGVoY_uWOUHN9La8KjZOp5BMAv/pub?gid=1617552127&single=true&output=csv';
-        
-        // ★ 手動設定：統計截止日
         const DATA_CUTOFF_DATE = "2026/01/07"; 
         
-        // ================= 邏輯區 =================
         let isDashboardLoaded = false;
         let globalDashboardData = [];
 
         window.onload = function() {
+            // 載入外部分割檔案
             loadPart('front-house-content', 'front-house.html');
             loadPart('back-house-content', 'back-house.html');
             if(window.location.hash === '#dashboard') switchTab('dash');
@@ -186,7 +155,10 @@
                     document.getElementById(id).innerHTML = data;
                     if (callback) callback();
                 })
-                .catch(err => console.error('無法載入檔案:', file));
+                .catch(err => {
+                    console.log('載入失敗:', file);
+                    document.getElementById(id).innerHTML = `<div class="p-4 text-center text-red-400">無法載入 ${file}，請確認檔案存在。</div>`;
+                });
         }
 
         function switchTab(type) {
@@ -199,7 +171,6 @@
             const timeline = document.getElementById('common-timeline');
             const dashControls = document.getElementById('dashboard-controls');
 
-            // Reset
             fBtn.className = 'tab-btn inactive';
             bBtn.className = 'tab-btn inactive';
             dBtn.className = 'tab-btn inactive';
@@ -218,38 +189,13 @@
                 initDashboard();
             }
         }
-
+        
         function initDashboard() {
             if (isDashboardLoaded) return; 
-
             document.getElementById('data-cutoff-display').innerHTML = `<i class="fa-regular fa-clock mr-1"></i>資料統計至：${DATA_CUTOFF_DATE}`;
-
-            const urlParams = new URLSearchParams(window.location.search);
-            const isRecruitmentMode = urlParams.get('demo') === '1';
-            const now = new Date();
             const timeDisplay = document.getElementById('last-update');
-            const loader = document.getElementById('loader');
-            const container = document.getElementById('data-container');
-
-            if(timeDisplay) timeDisplay.innerText = '系統連線時間：' + now.toLocaleString('zh-TW', { hour: '2-digit', minute: '2-digit' });
-
-            if (isRecruitmentMode) {
-                const demoData = [
-                    { "姓名": "新進夥伴 (範例)", "等級": "L1", "本職級累積時數": "45", "狀態": "累積中" },
-                    { "姓名": "資深夥伴 (範例)", "等級": "L2", "本職級累積時數": "295", "狀態": "可考核" }, 
-                    { "姓名": "核心幹部 (範例)", "等級": "L3", "本職級累積時數": "120", "狀態": "累積中" }, 
-                    { "姓名": "儲備幹部 (範例)", "等級": "L2", "本職級累積時數": "150", "狀態": "覆核中" }, 
-                    { "姓名": "L1 夥伴 (範例)", "等級": "L1", "本職級累積時數": "155", "狀態": "需評核" }  
-                ];
-                globalDashboardData = demoData;
-                renderDashboard(demoData);
-                if(loader) loader.style.display = 'none';
-                if(container) container.classList.remove('opacity-0');
-                if(timeDisplay) timeDisplay.innerHTML += ' <span class="bg-[#B29A1F] text-white px-2 py-0.5 rounded text-xs ml-2 font-bold">招募展示模式</span>';
-                isDashboardLoaded = true;
-                return;
-            }
-
+            if(timeDisplay) timeDisplay.innerText = '系統連線時間：' + new Date().toLocaleString('zh-TW', { hour: '2-digit', minute: '2-digit' });
+            
             const freshCsvUrl = csvUrl + "&nocache=" + Date.now();
             Papa.parse(freshCsvUrl, {
                 download: true, header: true, skipEmptyLines: true,
@@ -257,17 +203,12 @@
                     if (results.data && results.data.length > 0) {
                         globalDashboardData = results.data;
                         renderDashboard(results.data);
-                        if(loader) loader.style.display = 'none';
-                        if(container) container.classList.remove('opacity-0');
+                        document.getElementById('loader').style.display = 'none';
+                        document.getElementById('data-container').classList.remove('opacity-0');
                         isDashboardLoaded = true;
-                    } else {
-                        showError('讀取成功但沒有資料');
-                    }
+                    } else { showError('讀取成功但沒有資料'); }
                 },
-                error: function(err) {
-                    console.error("Error:", err);
-                    showError('無法讀取資料，請確認網路連線');
-                }
+                error: function(err) { showError('無法讀取資料'); }
             });
         }
 
@@ -281,7 +222,7 @@
             renderDashboard(filteredData);
         }
 
-        // ▼▼▼ 進度條優化版 (灰色底 + 強制顯色 + 視覺居中 + 變大) ▼▼▼
+        // 使用優化版的 Dashboard 渲染 (與您之前版本相同)
         function renderDashboard(data) {
             const container = document.getElementById('data-container');
             if(!container) return;
@@ -295,8 +236,6 @@
             const colName = headers.find(h => h.includes('姓名') || h.includes('Name')) || headers[0];
             const colLevel = headers.find(h => h.includes('等級') || h.includes('職級') || h.includes('Level')) || '等級';
             const colStatus = headers.find(h => h.includes('狀態') || h.includes('Status')) || '狀態';
-            
-            // ★★★ 關鍵修正：嚴格尋找「本職級」且排除「總時數」 ★★★
             let colHours = headers.find(h => h.includes('本職級') || h.includes('累積') && !h.includes('總'));
             if (!colHours) colHours = headers.find(h => h.includes('時數') && !h.includes('總')); 
 
@@ -345,7 +284,6 @@
                     targetHours = 300;
                 }
 
-                // ★★★ 新增邏輯：如果是覆核/維持/觀察狀態，目標降低 ★★★
                 if (status.includes('覆核') || status.includes('維持') || status.includes('觀察')) {
                     targetHours = (level === 'L3' ? 300 : 100);
                 }
@@ -362,7 +300,6 @@
                     statusHtml = `<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-400">累積中</span>`;
                 }
 
-                // ★ 電腦版：進度條加大
                 tableHtml += `
                     <tr class="${rowClass} group">
                         <td class="px-6 py-4 pl-8 font-bold text-base ${nameColorClass}">${name}</td>
@@ -383,7 +320,6 @@
                     </tr>
                 `;
 
-                // ★ 手機版：進度條加大
                 cardsHtml += `
                     <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 relative overflow-hidden">
                         ${level === 'L3' ? '<div class="absolute top-0 left-0 w-1 h-full bg-[#B29A1F]"></div>' : ''}
