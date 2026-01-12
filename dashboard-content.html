@@ -1,149 +1,23 @@
-<div class="max-w-5xl mx-auto py-6">
-    <header class="text-center mb-10">
-        <h2 class="text-3xl font-black text-slate-800 mb-3">
-            <i class="fa-solid fa-clock text-brand-red mr-3"></i>夥伴職能儀表板
-        </h2>
-        <p id="page-subtitle" class="text-slate-500 font-bold">載入中...</p>
-    </header>
-
-    <div class="bg-white rounded-3xl shadow-lg border border-slate-100 overflow-hidden relative min-h-[400px]">
-        
-        <div id="loader-view" class="absolute inset-0 flex flex-col items-center justify-center bg-white z-20">
-            <i class="fas fa-circle-notch loading-spinner text-4xl text-brand-gold mb-4"></i>
-            <p class="text-slate-400 font-bold">系統連線中...</p>
+<div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
+    <div class="relative w-full md:w-auto flex-1 max-w-md">
+        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <i class="fa-solid fa-magnifying-glass text-slate-400"></i>
         </div>
-
-        <div id="main-table-container" class="overflow-x-auto opacity-0 transition-opacity duration-500">
-            </div>
-
+        <input type="text" id="searchInput" placeholder="搜尋姓名、等級 (例如: L3)..." 
+            class="block w-full pl-10 pr-3 py-2 border border-slate-200 rounded-full leading-5 bg-slate-50 placeholder-slate-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-brand-gold focus:border-transparent transition duration-150 ease-in-out sm:text-sm"
+            onkeyup="filterData()">
     </div>
-    
-    <div class="mt-6 text-center" id="footer-note">
-        </div>
+    <div class="text-xs text-slate-400 text-right w-full md:w-auto">
+        <div id="data-cutoff-display" class="font-bold text-slate-600 mb-1">統計截止日：載入中...</div>
+        <div id="last-update">系統連線時間：載入中...</div>
+    </div>
 </div>
 
-<img src="" onerror="initHybridDashboard()" style="display:none;">
-
-<script>
-    function initHybridDashboard() {
-        // 1. 定義「假資料表格」的 HTML (保證跟真資料長得一模一樣)
-        const FAKE_TABLE_HTML = `
-            <table class="w-full text-left border-collapse">
-                <thead>
-                    <tr class="bg-slate-50 border-b border-slate-100 text-slate-500 text-sm uppercase tracking-wider">
-                        <th class="p-4 font-bold text-center">職級 (Level)</th>
-                        <th class="p-4 font-bold">夥伴姓名</th>
-                        <th class="p-4 font-bold text-center">累積時數</th>
-                        <th class="p-4 font-bold text-center">下階段目標</th>
-                        <th class="p-4 font-bold text-center">目前狀態</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-slate-100 text-slate-700 font-bold">
-                    <tr class="hover:bg-red-50 transition-colors bg-red-50/30">
-                        <td class="p-4 text-center"><span class="bg-brand-red text-white px-3 py-1 rounded-full text-xs shadow-sm">Level 3</span></td>
-                        <td class="p-4 flex items-center gap-2"><div class="w-8 h-8 rounded-full bg-brand-red text-white flex items-center justify-center text-xs">王</div><span>王Ｏ明 (店長範例)</span></td>
-                        <td class="p-4 text-center font-mono text-brand-red">1,280 H</td>
-                        <td class="p-4 text-center text-xs text-slate-400">已達最高職級</td>
-                        <td class="p-4 text-center"><span class="text-brand-red text-xs border border-brand-red px-2 py-1 rounded">Core Partner</span></td>
-                    </tr>
-                    <tr class="hover:bg-slate-50 transition-colors">
-                        <td class="p-4 text-center"><span class="bg-brand-gold text-white px-3 py-1 rounded-full text-xs shadow-sm">Level 2</span></td>
-                        <td class="p-4 flex items-center gap-2"><div class="w-8 h-8 rounded-full bg-brand-gold text-white flex items-center justify-center text-xs">陳</div><span>陳Ｏ豪 (資深範例)</span></td>
-                        <td class="p-4 text-center font-mono text-slate-600">425 H</td>
-                        <td class="p-4 text-center text-xs text-slate-400">目標 450 H<div class="w-24 h-1.5 bg-slate-100 rounded-full mx-auto mt-1 overflow-hidden"><div class="h-full bg-brand-gold" style="width: 94%"></div></div></td>
-                        <td class="p-4 text-center text-green-600 text-sm"><i class="fa-solid fa-arrow-trend-up mr-1"></i>即將晉升</td>
-                    </tr>
-                    <tr class="hover:bg-slate-50 transition-colors">
-                        <td class="p-4 text-center"><span class="bg-slate-400 text-white px-3 py-1 rounded-full text-xs shadow-sm">Level 1</span></td>
-                        <td class="p-4 flex items-center gap-2"><div class="w-8 h-8 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center text-xs">林</div><span>林Ｏ婷 (新人範例)</span></td>
-                        <td class="p-4 text-center font-mono text-slate-600">86 H</td>
-                        <td class="p-4 text-center text-xs text-slate-400">目標 150 H<div class="w-24 h-1.5 bg-slate-100 rounded-full mx-auto mt-1 overflow-hidden"><div class="h-full bg-slate-400" style="width: 57%"></div></div></td>
-                        <td class="p-4 text-center text-slate-400 text-sm">培訓中</td>
-                    </tr>
-                </tbody>
-            </table>
-        `;
-
-        // 2. 判斷現在是不是 Demo 模式
-        const isDemo = window.location.href.indexOf('demo') !== -1;
-        const container = document.getElementById('main-table-container');
-        const loader = document.getElementById('loader-view');
-
-        if (isDemo) {
-            // =========【路線 A：Demo 模式】=========
-            console.log("進入 Demo 模式：使用靜態假資料");
-            
-            // 1. 修改標題
-            document.getElementById('page-subtitle').innerText = "晉升進度公開透明 (招募展示範例)";
-            document.getElementById('footer-note').innerHTML = '<p class="text-xs text-slate-400"><i class="fa-solid fa-shield-halved mr-1"></i>隱私保護：本頁面為招募展示模式，數據為虛構範例。</p>';
-            
-            // 2. 直接塞入假表格
-            container.innerHTML = FAKE_TABLE_HTML;
-            
-            // 3. 顯示內容
-            loader.classList.add('hidden');
-            container.classList.remove('opacity-0');
-            
-            // ⚠️ 這裡直接 return，絕對不執行下面的 fetch，保證不抓真實資料
-            return;
-        }
-
-        // =========【路線 B：正式模式】=========
-        console.log("進入正式模式：準備連線 Google Sheet");
-        
-        document.getElementById('page-subtitle').innerText = "即時同步 Google 試算表數據";
-        document.getElementById('footer-note').innerHTML = '<p class="text-xs text-slate-400"><i class="fa-solid fa-circle-info mr-1"></i>資料來源：GYOSEN PT MASTER SHEET</p>';
-
-        const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSPKyIVGlT4rmWEOUPwSdccHGWEaGPF3QhMm0rXnh7g_0kJx9iXFzIGVoY_uWOUHN9La8KjZOp5BMAv/pub?gid=1723033779&single=true&output=csv";
-
-        fetch(CSV_URL)
-            .then(r => r.text())
-            .then(csvText => {
-                const rows = csvText.trim().replace(/\r/g, '').split('\n');
-                const headers = rows[0].split(',');
-                const data = rows.slice(1).map(row => {
-                    const v = row.split(',');
-                    return headers.reduce((acc, h, i) => ({...acc, [h]: v[i]}), {});
-                });
-
-                // 產生真實資料表格 (結構跟上面的假表格一模一樣，確保排版一致)
-                let html = `
-                <table class="w-full text-left border-collapse">
-                    <thead>
-                        <tr class="bg-slate-50 border-b border-slate-100 text-slate-500 text-sm uppercase tracking-wider">
-                            <th class="p-4 font-bold">姓名</th>
-                            <th class="p-4 font-bold text-center">職級</th>
-                            <th class="p-4 font-bold text-center">時數</th>
-                            <th class="p-4 font-bold text-center">狀態</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-100 text-slate-700 font-bold">`;
-
-                data.forEach(item => {
-                    const name = item['姓名'] || item['Name'] || Object.values(item)[0] || 'Unknown';
-                    const level = item['職級'] || item['Level'] || '';
-                    const hours = item['時數'] || item['Hours'] || '0';
-                    const status = item['狀態'] || item['Status'] || '';
-
-                    html += `
-                    <tr class="hover:bg-slate-50 transition-colors">
-                        <td class="p-4">${name}</td>
-                        <td class="p-4 text-center"><span class="bg-slate-100 px-2 py-1 rounded text-xs">${level}</span></td>
-                        <td class="p-4 text-center font-mono text-brand-red">${hours} H</td>
-                        <td class="p-4 text-center text-xs text-slate-400">${status}</td>
-                    </tr>`;
-                });
-                html += `</tbody></table>`;
-
-                // 塞入真表格
-                container.innerHTML = html;
-                loader.classList.add('hidden');
-                container.classList.remove('opacity-0');
-            })
-            .catch(err => {
-                console.error(err);
-                alert("連線失敗，請稍後再試");
-                loader.classList.add('hidden');
-            });
-    }
-</script>
+<div class="min-h-[400px] relative">
+    <div id="loader" class="absolute inset-0 flex flex-col items-center justify-center bg-white/80 z-20">
+        <i class="fas fa-circle-notch loading-spinner text-4xl text-brand-gold mb-4"></i>
+        <p class="text-slate-400 font-bold">正在讀取資料庫...</p>
+    </div>
+    
+    <div id="data-container" class="opacity-0 transition-opacity duration-500"></div>
+</div>
