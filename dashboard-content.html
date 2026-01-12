@@ -3,12 +3,31 @@
         <h2 class="text-3xl font-black text-slate-800 mb-3">
             <i class="fa-solid fa-clock text-brand-red mr-3"></i>夥伴職能儀表板
         </h2>
-        <p id="page-subtitle" class="text-slate-500 font-bold">晉升進度公開透明 (招募展示模式 V3.0)</p>
+        <p id="page-subtitle" class="text-slate-500 font-bold">載入中...</p>
     </header>
 
     <div class="bg-white rounded-3xl shadow-lg border border-slate-100 overflow-hidden relative min-h-[400px]">
         
-        <div id="demo-table-view" class="overflow-x-auto">
+        <div id="loader-view" class="absolute inset-0 flex flex-col items-center justify-center bg-white z-20">
+            <i class="fas fa-circle-notch loading-spinner text-4xl text-brand-gold mb-4"></i>
+            <p class="text-slate-400 font-bold">系統連線中...</p>
+        </div>
+
+        <div id="main-table-container" class="overflow-x-auto opacity-0 transition-opacity duration-500">
+            </div>
+
+    </div>
+    
+    <div class="mt-6 text-center" id="footer-note">
+        </div>
+</div>
+
+<img src="" onerror="initHybridDashboard()" style="display:none;">
+
+<script>
+    function initHybridDashboard() {
+        // 1. 定義「假資料表格」的 HTML (保證跟真資料長得一模一樣)
+        const FAKE_TABLE_HTML = `
             <table class="w-full text-left border-collapse">
                 <thead>
                     <tr class="bg-slate-50 border-b border-slate-100 text-slate-500 text-sm uppercase tracking-wider">
@@ -43,67 +62,52 @@
                     </tr>
                 </tbody>
             </table>
-        </div>
+        `;
 
-        <div id="loader-view" class="absolute inset-0 flex flex-col items-center justify-center bg-white z-10 hidden">
-            <i class="fas fa-circle-notch loading-spinner text-4xl text-brand-gold mb-4"></i>
-            <p class="text-slate-400 font-bold">正在同步 Google 試算表...</p>
-        </div>
-        
-        <div id="real-data-container" class="overflow-x-auto hidden"></div>
-    </div>
-    
-    <div class="mt-6 text-center" id="footer-note">
-        <p class="text-xs text-slate-400"><i class="fa-solid fa-shield-halved mr-1"></i>隱私保護：本頁面為招募展示模式，數據為虛構範例。</p>
-    </div>
-</div>
+        // 2. 判斷現在是不是 Demo 模式
+        const isDemo = window.location.href.indexOf('demo') !== -1;
+        const container = document.getElementById('main-table-container');
+        const loader = document.getElementById('loader-view');
 
-<img src="" onerror="initDashboard()" style="display:none;">
-
-<script>
-    function initDashboard() {
-        // 【第一道防線】檢查網址
-        // 只要網址裡有 demo 這四個字 (不分大小寫)，立刻啟動安全模式
-        var currentUrl = window.location.href.toLowerCase();
-        if (currentUrl.includes('demo')) {
-            console.warn("⛔️ 偵測到 Demo 模式：系統強制切斷連線功能。");
+        if (isDemo) {
+            // =========【路線 A：Demo 模式】=========
+            console.log("進入 Demo 模式：使用靜態假資料");
             
-            // 強制確保顯示的是範例表格
-            document.getElementById('demo-table-view').classList.remove('hidden');
-            document.getElementById('real-data-container').classList.add('hidden');
-            document.getElementById('loader-view').classList.add('hidden');
+            // 1. 修改標題
+            document.getElementById('page-subtitle').innerText = "晉升進度公開透明 (招募展示範例)";
+            document.getElementById('footer-note').innerHTML = '<p class="text-xs text-slate-400"><i class="fa-solid fa-shield-halved mr-1"></i>隱私保護：本頁面為招募展示模式，數據為虛構範例。</p>';
             
-            // 直接結束函式！程式碼執行到這裡就死掉了，絕對不會往下跑 fetch
-            return; 
+            // 2. 直接塞入假表格
+            container.innerHTML = FAKE_TABLE_HTML;
+            
+            // 3. 顯示內容
+            loader.classList.add('hidden');
+            container.classList.remove('opacity-0');
+            
+            // ⚠️ 這裡直接 return，絕對不執行下面的 fetch，保證不抓真實資料
+            return;
         }
 
-        // ========================================================
-        // 【第二道防線】只有通過上面檢查（代表網址沒 demo），才會執行這裡
-        // ========================================================
-        console.log("✅ 正式模式：啟動資料庫連線...");
+        // =========【路線 B：正式模式】=========
+        console.log("進入正式模式：準備連線 Google Sheet");
         
-        // 切換畫面
-        document.getElementById('demo-table-view').classList.add('hidden');
-        document.getElementById('loader-view').classList.remove('hidden');
         document.getElementById('page-subtitle').innerText = "即時同步 Google 試算表數據";
         document.getElementById('footer-note').innerHTML = '<p class="text-xs text-slate-400"><i class="fa-solid fa-circle-info mr-1"></i>資料來源：GYOSEN PT MASTER SHEET</p>';
 
         const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSPKyIVGlT4rmWEOUPwSdccHGWEaGPF3QhMm0rXnh7g_0kJx9iXFzIGVoY_uWOUHN9La8KjZOp5BMAv/pub?gid=1723033779&single=true&output=csv";
 
         fetch(CSV_URL)
-            .then(function(response) { return response.text(); })
-            .then(function(csvText) {
-                var rows = csvText.trim().replace(/\r/g, '').split('\n');
-                var headers = rows[0].split(',');
-                var data = rows.slice(1).map(function(row) {
-                    var values = row.split(',');
-                    return headers.reduce(function(obj, header, index) {
-                        obj[header] = values[index];
-                        return obj;
-                    }, {});
+            .then(r => r.text())
+            .then(csvText => {
+                const rows = csvText.trim().replace(/\r/g, '').split('\n');
+                const headers = rows[0].split(',');
+                const data = rows.slice(1).map(row => {
+                    const v = row.split(',');
+                    return headers.reduce((acc, h, i) => ({...acc, [h]: v[i]}), {});
                 });
 
-                var html = `
+                // 產生真實資料表格 (結構跟上面的假表格一模一樣，確保排版一致)
+                let html = `
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="bg-slate-50 border-b border-slate-100 text-slate-500 text-sm uppercase tracking-wider">
@@ -115,11 +119,11 @@
                     </thead>
                     <tbody class="divide-y divide-slate-100 text-slate-700 font-bold">`;
 
-                data.forEach(function(item) {
-                    var name = item['姓名'] || item['Name'] || Object.values(item)[0] || 'Unknown';
-                    var level = item['職級'] || item['Level'] || '';
-                    var hours = item['時數'] || item['Hours'] || '0';
-                    var status = item['狀態'] || item['Status'] || '';
+                data.forEach(item => {
+                    const name = item['姓名'] || item['Name'] || Object.values(item)[0] || 'Unknown';
+                    const level = item['職級'] || item['Level'] || '';
+                    const hours = item['時數'] || item['Hours'] || '0';
+                    const status = item['狀態'] || item['Status'] || '';
 
                     html += `
                     <tr class="hover:bg-slate-50 transition-colors">
@@ -131,15 +135,15 @@
                 });
                 html += `</tbody></table>`;
 
-                document.getElementById('real-data-container').innerHTML = html;
-                document.getElementById('loader-view').classList.add('hidden');
-                document.getElementById('real-data-container').classList.remove('hidden');
+                // 塞入真表格
+                container.innerHTML = html;
+                loader.classList.add('hidden');
+                container.classList.remove('opacity-0');
             })
-            .catch(function(error) {
-                console.error("連線失敗:", error);
-                // 安全備案：失敗時切回範例
-                document.getElementById('loader-view').classList.add('hidden');
-                document.getElementById('demo-table-view').classList.remove('hidden');
+            .catch(err => {
+                console.error(err);
+                alert("連線失敗，請稍後再試");
+                loader.classList.add('hidden');
             });
     }
 </script>
