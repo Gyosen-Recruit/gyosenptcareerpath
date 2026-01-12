@@ -35,7 +35,19 @@
         .standard-divider { height: 1px; flex-grow: 1; background: #E2E8F0; }
         .standard-desc { color: #4A5568; font-weight: 600; font-size: 1.05rem; padding-left: 15px; text-align: right; }
         .score-hint { font-size: 0.95rem; color: var(--text-muted); background: #F8FAFC; padding: 12px 16px; border-radius: 8px; margin-top: 12px; }
-        /* footer */
+        /* L3 黑金卡片專用樣式 (用於外場職能頁面) */
+        .level-box-premium { background: var(--level3-dark-gray) !important; border: 2px solid var(--brand-gold) !important; box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2) !important; position: relative; }
+        .level-box-premium h2, .level-box-premium .premium-price { color: white !important; }
+        .level-box-premium .text-slate-400 { color: #CBD5E1 !important; }
+        .level-box-premium .standard-card { background: #475569 !important; border-color: #64748B !important; }
+        .level-box-premium .standard-label { color: #F1F5F9 !important; }
+        .level-box-premium .standard-divider { background: #64748B !important; }
+        .level-box-premium .standard-desc { color: #E2E8F0 !important; }
+        .level-box-premium .score-hint { background: #334155 !important; color: #94A3B8 !important; }
+        .level-box-premium .sidebar-box { background: #475569 !important; color: #E2E8F0 !important; border: 1px solid #64748B; }
+        .level-box-premium .sidebar-box h5 { color: var(--brand-gold) !important; }
+        .premium-tag { position: absolute; top: -15px; right: 30px; background: var(--brand-gold); color: white; padding: 4px 16px; border-radius: 20px; font-size: 0.75rem; font-weight: 900; letter-spacing: 0.1em; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        .sidebar-box { background: #F8FAFC; padding: 30px; border-radius: 20px; height: fit-content; }
         .footer-info { background: var(--level3-dark-gray); color: #CBD5E1; padding: 60px 20px; margin-top: 80px; }
         .footer-info h4 { color: var(--brand-gold); font-weight: 900; margin-bottom: 1.5rem; font-size: 1.3rem; }
         .footer-divider { height: 1px; background: #475569; margin: 40px 0; }
@@ -93,7 +105,12 @@
             <div class="p-10 text-center"><i class="fas fa-circle-notch loading-spinner text-brand-gold mr-2"></i>正在載入外場資訊...</div>
         </div>
 
-        <div id="back-house-content" class="content-section"></div>
+        <div id="back-house-content" class="content-section">
+             <div class="p-10 text-center text-slate-400 bg-white rounded-xl border border-dashed border-slate-300">
+                <i class="fa-solid fa-utensils text-4xl mb-3 block opacity-20"></i>
+                內場內容載入中... (或尚未設定)
+            </div>
+        </div>
         
         <div id="dashboard-content" class="content-section min-h-[400px] relative">
             <div id="loader" class="absolute inset-0 flex flex-col items-center justify-center bg-white/80 z-20">
@@ -130,6 +147,7 @@
         let globalDashboardData = [];
 
         window.onload = function() {
+            // 注意：外場內容已經在 front-house.html，這裡只是載入
             loadPart('front-house-content', 'front-house.html');
             loadPart('back-house-content', 'back-house.html');
             if(window.location.hash === '#dashboard') switchTab('dash');
@@ -158,6 +176,7 @@
             const timeline = document.getElementById('common-timeline');
             const dashControls = document.getElementById('dashboard-controls');
 
+            // Reset
             fBtn.className = 'tab-btn inactive';
             bBtn.className = 'tab-btn inactive';
             dBtn.className = 'tab-btn inactive';
@@ -185,139 +204,38 @@
         function initDashboard() {
             if (isDashboardLoaded) return; 
 
-            // ============================================
-            // 【核心修改】偵測 Demo 模式，攔截並顯示假資料
-            // ============================================
-            if (window.location.href.indexOf('demo') !== -1) {
-                console.log("進入 Demo 模式：啟用範例資料");
-                
-                // 1. 修改 UI 文字
-                const tabDash = document.getElementById('tab-dash');
-                if(tabDash) tabDash.innerText = "時數儀表板"; 
-                
-                const cutoff = document.getElementById('data-cutoff-display');
-                if(cutoff) cutoff.innerHTML = `<i class="fa-regular fa-clock mr-1"></i>資料統計至：範例數據`;
-                
-                const lastUp = document.getElementById('last-update');
-                if(lastUp) lastUp.innerText = ""; 
+            document.getElementById('data-cutoff-display').innerHTML = `<i class="fa-regular fa-clock mr-1"></i>資料統計至：${DATA_CUTOFF_DATE}`;
 
-                // 2. 注入「修正狀態版」的假表格
-                const demoHTML = `
-                <div class="hidden md:block bg-white rounded-3xl shadow-lg border border-slate-100 overflow-hidden">
-                <table class="min-w-full text-left text-sm whitespace-nowrap border-collapse">
-                    <thead class="bg-slate-50 border-b border-slate-200 font-black text-slate-600 uppercase tracking-wider sticky top-0 z-10">
-                        <tr>
-                            <th class="px-6 py-5 pl-8">夥伴姓名</th>
-                            <th class="px-6 py-5">目前等級 / 進度</th>
-                            <th class="px-6 py-5 text-right text-brand-red">累積時數</th>
-                            <th class="px-6 py-5 text-center">考核狀態</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-100">
-                        <tr class="bg-amber-50 hover:bg-amber-100 transition-colors border-l-4 border-l-[#B29A1F]">
-                            <td class="px-6 py-4 pl-8 font-bold text-base text-slate-900">王Ｏ明 (店長範例)</td>
-                            <td class="px-6 py-4">
-                                <div class="flex items-center gap-3">
-                                    <span class="inline-block px-3 py-0.5 rounded-md border text-xs font-black tracking-wide bg-[#B29A1F] text-white border-[#B29A1F] shadow-sm">L3</span>
-                                    <div class="w-full max-w-[220px] h-4 bg-slate-200 rounded-full overflow-hidden shadow-inner">
-                                        <div class="h-full bg-[#B29A1F] progress-bar-fill shadow-sm" style="width: 100%"></div>
-                                    </div>
-                                    <span class="text-xs text-slate-400 font-bold w-10">100%</span>
-                                </div>
-                            </td>
-                            <td class="px-6 py-4 text-right">
-                                <span class="font-mono font-black text-xl text-[#B21F2C] tracking-tight">1,280</span>
-                                <span class="text-xs text-slate-400 ml-1">/ 600</span>
-                            </td>
-                            <td class="px-6 py-4 text-center">
-                                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700 ring-1 ring-green-600/20"><span class="w-1.5 h-1.5 mr-1.5 bg-green-500 rounded-full animate-pulse"></span>考核中</span>
-                            </td>
-                        </tr>
-                        <tr class="bg-slate-50 hover:bg-blue-50 transition-colors border-l-4 border-l-blue-400">
-                            <td class="px-6 py-4 pl-8 font-bold text-base text-slate-800">陳Ｏ豪 (資深範例)</td>
-                            <td class="px-6 py-4">
-                                <div class="flex items-center gap-3">
-                                    <span class="inline-block px-3 py-0.5 rounded-md border text-xs font-black tracking-wide bg-blue-500 text-white border-blue-500 shadow-sm">L2</span>
-                                    <div class="w-full max-w-[220px] h-4 bg-slate-200 rounded-full overflow-hidden shadow-inner">
-                                        <div class="h-full bg-[#3B82F6] progress-bar-fill shadow-sm" style="width: 94%"></div>
-                                    </div>
-                                    <span class="text-xs text-slate-400 font-bold w-10">94%</span>
-                                </div>
-                            </td>
-                            <td class="px-6 py-4 text-right">
-                                <span class="font-mono font-black text-xl text-[#B21F2C] tracking-tight">425</span>
-                                <span class="text-xs text-slate-400 ml-1">/ 450</span>
-                            </td>
-                            <td class="px-6 py-4 text-center">
-                                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-orange-100 text-orange-700 ring-1 ring-orange-600/20">覆核中</span>
-                            </td>
-                        </tr>
-                        <tr class="hover:bg-slate-50 transition-colors bg-white">
-                            <td class="px-6 py-4 pl-8 font-bold text-base text-slate-700">林Ｏ婷 (新人範例)</td>
-                            <td class="px-6 py-4">
-                                <div class="flex items-center gap-3">
-                                    <span class="inline-block px-3 py-0.5 rounded-md border text-xs font-black tracking-wide bg-slate-100 text-slate-500 border-slate-200">L1</span>
-                                    <div class="w-full max-w-[220px] h-4 bg-slate-200 rounded-full overflow-hidden shadow-inner">
-                                        <div class="h-full bg-[#B21F2C] progress-bar-fill shadow-sm" style="width: 57%"></div>
-                                    </div>
-                                    <span class="text-xs text-slate-400 font-bold w-10">57%</span>
-                                </div>
-                            </td>
-                            <td class="px-6 py-4 text-right">
-                                <span class="font-mono font-black text-xl text-[#B21F2C] tracking-tight">86</span>
-                                <span class="text-xs text-slate-400 ml-1">/ 150</span>
-                            </td>
-                            <td class="px-6 py-4 text-center">
-                                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-400">累積中</span>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                </div>
+            const urlParams = new URLSearchParams(window.location.search);
+            const isRecruitmentMode = urlParams.get('demo') === '1';
+            const now = new Date();
+            const timeDisplay = document.getElementById('last-update');
+            const loader = document.getElementById('loader');
+            const container = document.getElementById('data-container');
 
-                <div class="grid grid-cols-1 gap-4 md:hidden">
-                     <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 relative overflow-hidden">
-                        <div class="absolute top-0 left-0 w-1 h-full bg-[#B29A1F]"></div>
-                        <div class="flex justify-between items-start mb-4 pl-2">
-                            <div>
-                                <h3 class="font-bold text-lg text-slate-900">王Ｏ明 (店長範例)</h3>
-                                <span class="inline-block mt-1 px-2 py-0.5 rounded text-xs font-black bg-[#B29A1F] text-white border-[#B29A1F]">L3</span>
-                            </div>
-                            <div class="text-right">
-                                <div class="font-mono font-black text-2xl text-[#B21F2C]">1,280</div>
-                            </div>
-                        </div>
-                        <div class="pl-2">
-                             <div class="flex justify-between text-xs text-slate-400 mb-1"><span>達成率</span><span>100%</span></div>
-                             <div class="w-full h-4 bg-slate-200 rounded-full overflow-hidden mb-4 shadow-inner">
-                                <div class="h-full bg-[#B29A1F] progress-bar-fill shadow-sm" style="width: 100%"></div>
-                             </div>
-                             <div class="flex justify-end">
-                                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700 ring-1 ring-green-600/20"><span class="w-1.5 h-1.5 mr-1.5 bg-green-500 rounded-full animate-pulse"></span>考核中</span>
-                             </div>
-                        </div>
-                    </div>
-                </div>
-                `;
+            if(timeDisplay) timeDisplay.innerText = '系統連線時間：' + now.toLocaleString('zh-TW', { hour: '2-digit', minute: '2-digit' });
 
-                // 3. 顯示注入的假資料，並隱藏讀取動畫
-                document.getElementById('data-container').innerHTML = demoHTML;
-                document.getElementById('loader').style.display = 'none';
-                document.getElementById('data-container').classList.remove('opacity-0');
-                
-                // 4. 重要！標記已載入，直接 return 結束函式，絕對不去抓 CSV
+            // ================= Demo 模式資料 (使用王Ｏ明版本) =================
+            if (isRecruitmentMode) {
+                // 修正 UI
+                document.getElementById('tab-dash').innerText = "時數儀表板";
+                if(timeDisplay) timeDisplay.innerHTML = "";
+                if(document.getElementById('data-cutoff-display')) document.getElementById('data-cutoff-display').innerHTML = `<i class="fa-regular fa-clock mr-1"></i>資料統計至：範例數據`;
+
+                const demoData = [
+                    { "姓名": "王Ｏ明 (店長範例)", "等級": "L3", "本職級累積時數": "1,280", "狀態": "可考核" }, // 對應綠燈
+                    { "姓名": "陳Ｏ豪 (資深範例)", "等級": "L2", "本職級累積時數": "425", "狀態": "覆核中" }, // 對應橘燈
+                    { "姓名": "林Ｏ婷 (新人範例)", "等級": "L1", "本職級累積時數": "86", "狀態": "累積中" }  // 對應灰燈
+                ];
+                globalDashboardData = demoData;
+                renderDashboard(demoData);
+                if(loader) loader.style.display = 'none';
+                if(container) container.classList.remove('opacity-0');
                 isDashboardLoaded = true;
                 return;
             }
 
-            // ============================================
-            // 以下是「正式版」邏輯 (沒 demo 才會執行)
-            // ============================================
-            
-            document.getElementById('data-cutoff-display').innerHTML = `<i class="fa-regular fa-clock mr-1"></i>資料統計至：${DATA_CUTOFF_DATE}`;
-            const timeDisplay = document.getElementById('last-update');
-            if(timeDisplay) timeDisplay.innerText = '系統連線時間：' + new Date().toLocaleString('zh-TW', { hour: '2-digit', minute: '2-digit' });
-            
+            // ================= 正式模式 =================
             const freshCsvUrl = csvUrl + "&nocache=" + Date.now();
             Papa.parse(freshCsvUrl, {
                 download: true, header: true, skipEmptyLines: true,
@@ -325,12 +243,17 @@
                     if (results.data && results.data.length > 0) {
                         globalDashboardData = results.data;
                         renderDashboard(results.data);
-                        document.getElementById('loader').style.display = 'none';
-                        document.getElementById('data-container').classList.remove('opacity-0');
+                        if(loader) loader.style.display = 'none';
+                        if(container) container.classList.remove('opacity-0');
                         isDashboardLoaded = true;
-                    } else { showError('讀取成功但沒有資料'); }
+                    } else {
+                        showError('讀取成功但沒有資料');
+                    }
                 },
-                error: function(err) { showError('無法讀取資料'); }
+                error: function(err) {
+                    console.error("Error:", err);
+                    showError('無法讀取資料，請確認網路連線');
+                }
             });
         }
 
@@ -344,7 +267,7 @@
             renderDashboard(filteredData);
         }
 
-        // 正式版渲染函式 (保持不變，會自動根據文字變色)
+        // ================= 渲染邏輯 (含樣式修正) =================
         function renderDashboard(data) {
             const container = document.getElementById('data-container');
             if(!container) return;
@@ -358,7 +281,9 @@
             const colName = headers.find(h => h.includes('姓名') || h.includes('Name')) || headers[0];
             const colLevel = headers.find(h => h.includes('等級') || h.includes('職級') || h.includes('Level')) || '等級';
             const colStatus = headers.find(h => h.includes('狀態') || h.includes('Status')) || '狀態';
-            let colHours = headers.find(h => h.includes('本職級') || h.includes('累積') && !h.includes('總'));
+            
+            // 嚴格尋找時數欄位
+            let colHours = headers.find(h => h.includes('本職級') || (h.includes('累積') && !h.includes('總')));
             if (!colHours) colHours = headers.find(h => h.includes('時數') && !h.includes('總')); 
 
             let tableHtml = `
@@ -384,7 +309,7 @@
                 const level = row[colLevel] ? row[colLevel].trim() : 'New'; 
                 const hours = row[colHours] || '0'; 
                 const status = row[colStatus] || '-';
-                const numHours = parseFloat(hours.replace(/,/g, '')) || 0;
+                const numHours = parseFloat(String(hours).replace(/,/g, '')) || 0;
                 
                 let rowClass = "hover:bg-slate-50 transition-colors bg-white";
                 let levelBadgeClass = "bg-slate-100 text-slate-500 border-slate-200"; 
@@ -393,6 +318,7 @@
                 let targetHours = 150; 
 
                 if (level === 'L3') {
+                    // L3 修正：保留排版一致性，僅用邊框色區分
                     rowClass = "bg-amber-50/60 hover:bg-amber-100 transition-colors border-l-4 border-l-[#B29A1F]"; 
                     levelBadgeClass = "bg-[#B29A1F] text-white border-[#B29A1F] shadow-sm"; 
                     nameColorClass = "text-slate-900"; 
@@ -406,6 +332,7 @@
                     targetHours = 300;
                 }
 
+                // 特殊狀態調整目標
                 if (status.includes('覆核') || status.includes('維持') || status.includes('觀察')) {
                     targetHours = (level === 'L3' ? 300 : 100);
                 }
