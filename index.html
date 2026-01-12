@@ -12,12 +12,14 @@
         body { background-color: var(--ui-gray); color: var(--text-main); font-size: 1.1rem; font-family: "PingFang TC", "Microsoft JhengHei", sans-serif; line-height: 1.7; }
         .loading-spinner { animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        /* header 與排版 */
         .hero-header { background: #ffffff; padding: 60px 20px 40px; text-align: center; }
         .hero-title { font-size: clamp(2.2rem, 8vw, 3.5rem); font-weight: 900; letter-spacing: -0.02em; color: #1A202C; margin-bottom: 2rem; }
         .timeline-container { background: white; border-radius: 28px; padding: 48px; margin-top: 20px; margin-bottom: 50px; box-shadow: 0 20px 50px rgba(0,0,0,0.06); border: 1px solid #edf2f7; position: relative; z-index: 10; }
         .schedule-grid { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; }
         .schedule-card { background: white; border-radius: 20px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; border: 1px solid #E2E8F0; padding: 20px; width: 220px; height: 160px; }
         .step-label { font-size: 0.75rem; font-weight: 900; color: var(--text-muted); letter-spacing: 0.05em; margin-bottom: 8px; }
+        /* 分頁按鈕 */
         .tab-container { display: flex; justify-content: center; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
         .tab-btn { flex: 1; min-width: 140px; max-width: 200px; padding: 14px 24px; border-radius: 50px; font-weight: 800; transition: all 0.3s ease; cursor: pointer; border: 2px solid transparent; text-align: center;}
         .tab-btn.active { background-color: var(--brand-red); color: white; box-shadow: 0 4px 15px rgba(178, 31, 44, 0.3); }
@@ -26,12 +28,25 @@
         .content-section { display: none; }
         .content-section.active { display: block; animation: fadeIn 0.5s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        /* 外場/內場卡片樣式 */
         .standard-card { background: #ffffff; border-radius: 12px; padding: 24px; margin-bottom: 18px; border: 1px solid #EEF2F7; }
         .standard-title-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
         .standard-label { font-weight: 800; color: #1A202C; font-size: 1.2rem; flex-shrink: 0; padding-right: 15px; }
         .standard-divider { height: 1px; flex-grow: 1; background: #E2E8F0; }
         .standard-desc { color: #4A5568; font-weight: 600; font-size: 1.05rem; padding-left: 15px; text-align: right; }
         .score-hint { font-size: 0.95rem; color: var(--text-muted); background: #F8FAFC; padding: 12px 16px; border-radius: 8px; margin-top: 12px; }
+        /* L3 黑金卡片專用樣式 */
+        .level-box-premium { background: var(--level3-dark-gray) !important; border: 2px solid var(--brand-gold) !important; box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2) !important; position: relative; }
+        .level-box-premium h2, .level-box-premium .premium-price { color: white !important; }
+        .level-box-premium .text-slate-400 { color: #CBD5E1 !important; }
+        .level-box-premium .standard-card { background: #475569 !important; border-color: #64748B !important; }
+        .level-box-premium .standard-label { color: #F1F5F9 !important; }
+        .level-box-premium .standard-divider { background: #64748B !important; }
+        .level-box-premium .standard-desc { color: #E2E8F0 !important; }
+        .level-box-premium .score-hint { background: #334155 !important; color: #94A3B8 !important; }
+        .level-box-premium .sidebar-box { background: #475569 !important; color: #E2E8F0 !important; border: 1px solid #64748B; }
+        .level-box-premium .sidebar-box h5 { color: var(--brand-gold) !important; }
+        .premium-tag { position: absolute; top: -15px; right: 30px; background: var(--brand-gold); color: white; padding: 4px 16px; border-radius: 20px; font-size: 0.75rem; font-weight: 900; letter-spacing: 0.1em; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
         .sidebar-box { background: #F8FAFC; padding: 30px; border-radius: 20px; height: fit-content; }
         .footer-info { background: var(--level3-dark-gray); color: #CBD5E1; padding: 60px 20px; margin-top: 80px; }
         .footer-info h4 { color: var(--brand-gold); font-weight: 900; margin-bottom: 1.5rem; font-size: 1.3rem; }
@@ -51,22 +66,8 @@
     </header>
 
     <div class="max-w-[1150px] mx-auto px-4">
-        <div id="dashboard-controls" class="hidden mb-6">
-            <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex flex-col md:flex-row justify-between items-center gap-4">
-                <div class="relative w-full md:w-auto flex-1 max-w-md">
-                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <i class="fa-solid fa-magnifying-glass text-slate-400"></i>
-                    </div>
-                    <input type="text" id="searchInput" placeholder="搜尋姓名、等級 (例如: L3)..." 
-                        class="block w-full pl-10 pr-3 py-2 border border-slate-200 rounded-full leading-5 bg-slate-50 placeholder-slate-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-brand-gold focus:border-transparent transition duration-150 ease-in-out sm:text-sm"
-                        onkeyup="filterData()">
-                </div>
-                <div class="text-xs text-slate-400 text-right w-full md:w-auto">
-                    <div id="data-cutoff-display" class="font-bold text-slate-600 mb-1">統計截止日：載入中...</div>
-                    <div id="last-update">系統連線時間：載入中...</div>
-                </div>
+        <div id="dashboard-content" class="content-section">
             </div>
-        </div>
 
         <div id="common-timeline" class="timeline-container">
             <div class="schedule-grid">
@@ -92,13 +93,6 @@
 
         <div id="back-house-content" class="content-section"></div>
         
-        <div id="dashboard-content" class="content-section min-h-[400px] relative">
-            <div id="loader" class="absolute inset-0 flex flex-col items-center justify-center bg-white/80 z-20">
-                <i class="fas fa-circle-notch loading-spinner text-4xl text-brand-gold mb-4"></i>
-                <p class="text-slate-400 font-bold">正在讀取資料庫...</p>
-            </div>
-            <div id="data-container" class="opacity-0 transition-opacity duration-500"></div>
-        </div>
     </div>
 
     <footer class="footer-info">
@@ -127,8 +121,11 @@
         let globalDashboardData = [];
 
         window.onload = function() {
+            // 一次載入三個內容檔案
             loadPart('front-house-content', 'front-house.html');
             loadPart('back-house-content', 'back-house.html');
+            loadPart('dashboard-content', 'dashboard-content.html');
+            
             if(window.location.hash === '#dashboard') switchTab('dash');
         };
 
@@ -153,33 +150,46 @@
             const bContent = document.getElementById('back-house-content');
             const dContent = document.getElementById('dashboard-content');
             const timeline = document.getElementById('common-timeline');
-            const dashControls = document.getElementById('dashboard-controls');
 
+            // Reset UI
             fBtn.className = 'tab-btn inactive';
             bBtn.className = 'tab-btn inactive';
             dBtn.className = 'tab-btn inactive';
             fContent.className = 'content-section';
             bContent.className = 'content-section';
             dContent.className = 'content-section';
-            dashControls.classList.add('hidden');
+            timeline.style.display = 'none'; // 預設隱藏，下面再判斷是否顯示
 
             if (type === 'front') {
-                fBtn.className = 'tab-btn active'; fContent.className = 'content-section active'; timeline.style.display = 'block';
+                fBtn.className = 'tab-btn active'; 
+                fContent.className = 'content-section active'; 
+                timeline.style.display = 'block';
             } else if (type === 'back') {
-                bBtn.className = 'tab-btn active'; bContent.className = 'content-section active'; timeline.style.display = 'block';
+                bBtn.className = 'tab-btn active'; 
+                bContent.className = 'content-section active'; 
+                timeline.style.display = 'block';
             } else if (type === 'dash') {
-                dBtn.className = 'tab-btn dashboard-active'; dContent.className = 'content-section active'; timeline.style.display = 'none';
+                dBtn.className = 'tab-btn dashboard-active'; 
+                dContent.className = 'content-section active'; 
                 
-                if (window.location.href.indexOf('demo') === -1) {
-                    dashControls.classList.remove('hidden');
-                }
+                // 切換到儀表板時，如果還沒初始化資料，就執行初始化
                 initDashboard();
             }
         }
         
         function initDashboard() {
+            // 防止重複執行
             if (isDashboardLoaded) return; 
-            document.getElementById('data-cutoff-display').innerHTML = `<i class="fa-regular fa-clock mr-1"></i>資料統計至：${DATA_CUTOFF_DATE}`;
+            
+            // 確保元素已經存在 (因為是非同步載入，這裡做個簡單檢查)
+            const cutoffDisplay = document.getElementById('data-cutoff-display');
+            if (!cutoffDisplay) {
+                // 如果 HTML 還沒載入完，延遲 500ms 再試一次
+                setTimeout(initDashboard, 500);
+                return;
+            }
+
+            cutoffDisplay.innerHTML = `<i class="fa-regular fa-clock mr-1"></i>資料統計至：${DATA_CUTOFF_DATE}`;
             const timeDisplay = document.getElementById('last-update');
             if(timeDisplay) timeDisplay.innerText = '系統連線時間：' + new Date().toLocaleString('zh-TW', { hour: '2-digit', minute: '2-digit' });
             
@@ -187,7 +197,7 @@
             if (window.location.href.indexOf('demo') !== -1) {
                 document.getElementById('tab-dash').innerText = "時數儀表板";
                 if(timeDisplay) timeDisplay.innerHTML = "";
-                if(document.getElementById('data-cutoff-display')) document.getElementById('data-cutoff-display').innerHTML = `<i class="fa-regular fa-clock mr-1"></i>資料統計至：範例數據`;
+                if(cutoffDisplay) cutoffDisplay.innerHTML = `<i class="fa-regular fa-clock mr-1"></i>資料統計至：範例數據`;
 
                 const demoData = [
                     { "姓名": "王Ｏ明 (店長範例)", "等級": "L3", "本職級累積時數": "1,280", "狀態": "可考核" },
@@ -221,6 +231,7 @@
 
         function filterData() {
             const input = document.getElementById('searchInput');
+            if (!input) return;
             const filter = input.value.toUpperCase();
             if(!globalDashboardData.length) return;
             const filteredData = globalDashboardData.filter(row => {
