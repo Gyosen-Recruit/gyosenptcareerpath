@@ -192,13 +192,16 @@
                 console.log("進入 Demo 模式：啟用範例資料");
                 
                 // 1. 修改 UI 文字
-                document.getElementById('tab-dash').innerText = "時數儀表板"; // 拿掉(測試)
+                const tabDash = document.getElementById('tab-dash');
+                if(tabDash) tabDash.innerText = "時數儀表板"; 
+                
                 const cutoff = document.getElementById('data-cutoff-display');
                 if(cutoff) cutoff.innerHTML = `<i class="fa-regular fa-clock mr-1"></i>資料統計至：範例數據`;
+                
                 const lastUp = document.getElementById('last-update');
-                if(lastUp) lastUp.innerText = ""; // Demo 模式不需要顯示連線時間
+                if(lastUp) lastUp.innerText = ""; 
 
-                // 2. 注入跟正式版一模一樣排版的「假表格」
+                // 2. 注入「修正狀態版」的假表格
                 const demoHTML = `
                 <div class="hidden md:block bg-white rounded-3xl shadow-lg border border-slate-100 overflow-hidden">
                 <table class="min-w-full text-left text-sm whitespace-nowrap border-collapse">
@@ -227,7 +230,7 @@
                                 <span class="text-xs text-slate-400 ml-1">/ 600</span>
                             </td>
                             <td class="px-6 py-4 text-center">
-                                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold border border-[#B21F2C] text-[#B21F2C] bg-white">Core Partner</span>
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700 ring-1 ring-green-600/20"><span class="w-1.5 h-1.5 mr-1.5 bg-green-500 rounded-full animate-pulse"></span>考核中</span>
                             </td>
                         </tr>
                         <tr class="bg-slate-50/80 hover:bg-blue-50 transition-colors border-l-4 border-l-blue-400">
@@ -246,7 +249,7 @@
                                 <span class="text-xs text-slate-400 ml-1">/ 450</span>
                             </td>
                             <td class="px-6 py-4 text-center">
-                                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700 ring-1 ring-green-600/20"><span class="w-1.5 h-1.5 mr-1.5 bg-green-500 rounded-full animate-pulse"></span>即將晉升</span>
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-orange-100 text-orange-700 ring-1 ring-orange-600/20">覆核中</span>
                             </td>
                         </tr>
                         <tr class="hover:bg-slate-50 transition-colors bg-white">
@@ -265,7 +268,7 @@
                                 <span class="text-xs text-slate-400 ml-1">/ 150</span>
                             </td>
                             <td class="px-6 py-4 text-center">
-                                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-400">培訓中</span>
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-400">累積中</span>
                             </td>
                         </tr>
                     </tbody>
@@ -283,6 +286,11 @@
                             <div class="text-right">
                                 <div class="font-mono font-black text-2xl text-[#B21F2C]">1,280</div>
                             </div>
+                        </div>
+                        <div class="pl-2">
+                             <div class="flex justify-end">
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700 ring-1 ring-green-600/20"><span class="w-1.5 h-1.5 mr-1.5 bg-green-500 rounded-full animate-pulse"></span>考核中</span>
+                             </div>
                         </div>
                     </div>
                 </div>
@@ -332,7 +340,7 @@
             renderDashboard(filteredData);
         }
 
-        // 正式版渲染函式 (保持不變)
+        // 正式版渲染函式 (保持不變，會自動根據文字變色)
         function renderDashboard(data) {
             const container = document.getElementById('data-container');
             if(!container) return;
