@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
     
     <style>
         :root {
@@ -15,9 +15,9 @@
             --brand-dark: #8a1822;
             --brand-light: #fff0f1;
             --gold-main: #d4af37;
+            --gold-dark: #b45309;
             --gray-bg: #f8fafc;
         }
-        /* 手機版字體優化 */
         html { font-size: 15px; }
         
         body { 
@@ -26,42 +26,52 @@
             color: #334155;
             line-height: 1.5;
             -webkit-font-smoothing: antialiased;
+            overflow-x: hidden; /* 防止左右滑動 */
         }
         
         .base-card {
             background-color: white;
-            border-radius: 12px;
+            border-radius: 16px;
             transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
 
-        /* 等級顏色邏輯 */
         /* Level 0: 未達標 (灰色) */
-        .tier-0 { border: 1px solid #e2e8f0; border-top: 4px solid #cbd5e1; }
+        .tier-0 { border: 1px solid #e2e8f0; border-top: 5px solid #cbd5e1; }
+        
         /* Level 1: 達標 (品牌紅) */
-        .tier-1 { border: 1px solid #fee2e2; border-top: 4px solid var(--brand-red); box-shadow: 0 4px 12px rgba(178, 31, 44, 0.08); }
-        /* Level 2: 優異 (金色) */
-        .tier-2 { border: 1px solid #fef3c7; border-top: 4px solid var(--gold-main); background: linear-gradient(to bottom right, #fff, #fffbf0); box-shadow: 0 4px 12px rgba(212, 175, 55, 0.15); }
-        /* Level 3: 巔峰 (黑金) */
-        .tier-3 { border: 1px solid #1e293b; border-top: 4px solid #0f172a; background: linear-gradient(to bottom right, #ffffff, #f8fafc); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); }
+        .tier-1 { border: 1px solid #fee2e2; border-top: 5px solid var(--brand-red); box-shadow: 0 4px 15px rgba(178, 31, 44, 0.08); }
+        
+        /* Level 2: 優異 (亮金色) */
+        .tier-2 { border: 1px solid #fef3c7; border-top: 5px solid var(--gold-main); background: linear-gradient(to bottom right, #fff, #fffbf0); box-shadow: 0 4px 15px rgba(212, 175, 55, 0.15); }
+        
+        /* Level 3: 巔峰 (極致漸層金 - 修正看起來像沒顏色的問題) */
+        .tier-3 { 
+            border: 1px solid #fde68a; 
+            border-top: 5px solid #b45309; /* 深金色邊框 */
+            background: linear-gradient(135deg, #fff, #fffbeb, #fef3c7); 
+            box-shadow: 0 8px 25px rgba(180, 83, 9, 0.15); 
+        }
 
-        /* 黃金漸層字 (L3專用) */
+        /* 黃金漸層字特效 */
         .text-gradient-gold {
-            background: linear-gradient(45deg, #b45309, #d97706, #b45309);
+            background: linear-gradient(45deg, #d97706, #b45309, #d97706);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            font-weight: 900;
         }
         
-        /* 進度條流光 */
         .progress-shimmer { position: relative; overflow: hidden; }
         .progress-shimmer::after {
             content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
             transform: translateX(-100%); animation: shimmer 2s infinite;
         }
         @keyframes shimmer { 100% { transform: translateX(100%); } }
 
         .tab-btn {
-            padding: 10px 20px;
+            padding: 10px 24px;
             font-weight: 500;
             cursor: pointer;
             transition: all 0.3s;
@@ -81,15 +91,29 @@
         
         th, td { padding: 12px 14px; }
         @media (max-width: 640px) {
-            th, td { padding: 10px 10px; font-size: 0.85rem; }
+            th, td { padding: 10px 8px; font-size: 0.85rem; }
         }
 
-        /* 關鍵修正：強制數字換行與縮放，防止切到逗號 */
+        /* 關鍵修正：響應式字體大小，確保數字不被切掉 */
+        .revenue-container {
+            display: flex;
+            align-items: baseline;
+            justify-content: center;
+            flex-wrap: wrap;
+            width: 100%;
+        }
         .revenue-number {
+            font-family: 'Roboto', 'Noto Sans TC', sans-serif; /* 數字專用字體 */
             font-variant-numeric: tabular-nums;
-            word-wrap: break-word;
-            word-break: break-all; 
             line-height: 1.1;
+            /* 使用 clamp 動態縮放字體：最小 32px，最大 60px */
+            font-size: clamp(2rem, 8vw, 3.75rem); 
+            letter-spacing: -0.05em;
+        }
+        .currency-symbol {
+            font-size: clamp(1.2rem, 4vw, 1.8rem);
+            margin-right: 4px;
+            opacity: 0.6;
         }
     </style>
 </head>
@@ -115,8 +139,8 @@
         </header>
 
         <div class="bg-white shadow-sm mb-6 sticky top-16 z-30">
-            <div class="max-w-7xl mx-auto px-4 md:px-6 overflow-x-auto">
-                <div class="flex space-x-4 md:space-x-6">
+            <div class="max-w-7xl mx-auto px-4 md:px-6 overflow-x-auto no-scrollbar">
+                <div class="flex space-x-2 md:space-x-6">
                     <button @click="currentStore = 'zhubei'" class="tab-btn" :class="{ 'active': currentStore === 'zhubei' }">竹北店</button>
                     <button @click="currentStore = 'jingguo'" class="tab-btn" :class="{ 'active': currentStore === 'jingguo' }">經國門市</button>
                 </div>
@@ -132,12 +156,12 @@
                             <h2 class="text-sm font-bold tracking-widest uppercase text-gray-400">本月實際業績</h2>
                             <div class="text-xs text-gray-400 mt-1">目標: {{ formatNumber(activeData.target) }}</div>
                         </div>
-                        </div>
+                    </div>
                     
-                    <div class="text-center mb-6 px-1">
-                        <div class="revenue-number text-3xl md:text-5xl font-black tracking-tight flex justify-center items-start flex-wrap" :class="revenueTextClass">
-                            <span class="text-xl md:text-2xl opacity-60 mr-1 mt-1">$</span>
-                            <span>{{ formatNumber(activeData.revenue) }}</span>
+                    <div class="text-center mb-6 w-full">
+                        <div class="revenue-container" :class="revenueTextClass">
+                            <span class="currency-symbol">$</span>
+                            <span class="revenue-number">{{ formatNumber(activeData.revenue) }}</span>
                         </div>
                         <div class="mt-2 text-base font-medium" :class="revenueSubTextClass">
                             達成率 {{ activeData.target > 0 ? ((activeData.revenue / activeData.target) * 100).toFixed(1) : 0 }}%
@@ -327,7 +351,11 @@
                             foodDiff = item.food - prev.food;
                             laborDiff = item.labor - prev.labor;
                         }
-                        return { ...item, mom: mom.toFixed(1), foodDiff, laborDiff };
+                        return { 
+                            ...item, 
+                            mom: mom.toFixed(1),
+                            foodDiff, laborDiff
+                        };
                     }).reverse();
                 });
 
@@ -431,14 +459,12 @@
                 const currentTier = computed(() => {
                     const r = activeData.value.revenue;
                     const t = activeData.value.target;
-                    // 如果沒有目標，或目標為0，直接回傳0 (避免 Infinity)
                     if (!t || t === 0) return 0;
-                    
                     const ratio = r / t;
-                    if (ratio >= 1.2) return 3; // >120%
-                    if (ratio >= 1.1) return 2; // >110%
-                    if (ratio >= 1.0) return 1; // >100%
-                    return 0; // 未達標
+                    if (ratio >= 1.2) return 3; 
+                    if (ratio >= 1.1) return 2;
+                    if (ratio >= 1.0) return 1;
+                    return 0;
                 });
 
                 const currentRate = computed(() => {
@@ -448,43 +474,37 @@
                     return 0;
                 });
 
-                const tierName = computed(() => {
-                    if (currentTier.value === 3) return "卓越巔峰 (Level 3)";
-                    if (currentTier.value === 2) return "表現優異 (Level 2)";
-                    if (currentTier.value === 1) return "目標達成 (Level 1)";
-                    return "尚未達標";
-                });
-
+                // 顏色修正邏輯
                 const tierCardClass = computed(() => {
-                    if (currentTier.value === 3) return "tier-3";
-                    if (currentTier.value === 2) return "tier-2";
-                    if (currentTier.value === 1) return "tier-1";
-                    return "tier-0";
+                    if (currentTier.value === 3) return "tier-3"; // 極致金
+                    if (currentTier.value === 2) return "tier-2"; // 亮金
+                    if (currentTier.value === 1) return "tier-1"; // 紅
+                    return "tier-0"; // 灰
                 });
 
                 const revenueTextClass = computed(() => {
                     if (currentTier.value === 3) return "text-gradient-gold";
-                    if (currentTier.value === 2) return "text-yellow-600";
+                    if (currentTier.value === 2) return "text-[#d97706]";
                     if (currentTier.value === 1) return "text-[#B21F2C]";
-                    return "text-gray-400"; // 未達標顏色
+                    return "text-gray-400";
                 });
 
                 const revenueSubTextClass = computed(() => {
-                    if (currentTier.value >= 2) return "text-yellow-700";
+                    if (currentTier.value >= 2) return "text-[#b45309]";
                     if (currentTier.value === 1) return "text-[#B21F2C]";
                     return "text-gray-400";
                 });
 
                 const progressBarClass = computed(() => {
-                    if (currentTier.value === 3) return "bg-gray-800 progress-shimmer"; 
-                    if (currentTier.value === 2) return "bg-yellow-500 progress-shimmer"; 
+                    if (currentTier.value === 3) return "bg-[#b45309] progress-shimmer"; 
+                    if (currentTier.value === 2) return "bg-[#d97706] progress-shimmer"; 
                     if (currentTier.value === 1) return "bg-[#B21F2C]"; 
                     return "bg-gray-300"; 
                 });
 
                 const tierTextClass = computed(() => {
-                    if (currentTier.value === 3) return "text-gray-800";
-                    if (currentTier.value === 2) return "text-yellow-700";
+                    if (currentTier.value === 3) return "text-[#b45309]";
+                    if (currentTier.value === 2) return "text-[#d97706]";
                     if (currentTier.value === 1) return "text-[#B21F2C]";
                     return "text-gray-400";
                 });
@@ -537,7 +557,7 @@
 
                 return {
                     currentStore, currentStoreName, activeData, activeStaffList,
-                    tierName, currentRate, initialPool, totalPenalty, finalPool, 
+                    currentRate, initialPool, totalPenalty, finalPool, 
                     valuePerPoint, totalDistributed, foodLimit, laborLimit, currentStoreHistory,
                     formatCurrency, formatNumber, isLoading, fetchData, calculatePenalty,
                     tierCardClass, revenueTextClass, revenueSubTextClass, progressBarClass, 
