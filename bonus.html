@@ -321,9 +321,7 @@
                     jingguo: { name: '經國門市', revenue: 0, target: 1500000, foodCostRate: 0, laborCostRate: 0 }
                 });
 
-                // 歷史資料存放區
                 const historyData = reactive([]);
-
                 const foodLimit = 40.0;
                 const laborLimit = 28.0;
 
@@ -340,31 +338,17 @@
                 const currentStoreName = computed(() => activeData.value.name);
                 const activeStaffList = computed(() => staffList.value);
 
-                // 計算該店的歷史紀錄與 MOM
                 const currentStoreHistory = computed(() => {
-                    // 1. 篩選目前店鋪的資料
-                    // 使用 storeName (竹北店/經國門市) 或簡寫 (竹北/經國) 來匹配
-                    let list = historyData.filter(h => {
-                        return h.store.includes(currentStore.value === 'zhubei' ? '竹北' : '經國');
-                    });
-                    
-                    // 2. 排序 (日期舊到新)
+                    let list = historyData.filter(h => h.store.includes(currentStore.value === 'zhubei' ? '竹北' : '經國'));
                     list.sort((a, b) => new Date(a.month) - new Date(b.month));
-
-                    // 3. 計算 MOM
                     return list.map((item, index) => {
                         let mom = 0;
                         if (index > 0) {
                             const prev = list[index - 1].revenue;
-                            if (prev > 0) {
-                                mom = ((item.revenue - prev) / prev) * 100;
-                            }
+                            if (prev > 0) mom = ((item.revenue - prev) / prev) * 100;
                         }
-                        return {
-                            ...item,
-                            mom: mom.toFixed(1)
-                        };
-                    }).reverse(); // 反轉讓最新的在上面
+                        return { ...item, mom: mom.toFixed(1) };
+                    }).reverse();
                 });
 
                 const fetchData = () => {
@@ -378,67 +362,57 @@
                             const rows = results.data;
                             storeData.zhubei.revenue = 0;
                             storeData.jingguo.revenue = 0;
-                            historyData.splice(0); // 清空歷史
+                            historyData.splice(0);
 
-                            // Step 1: 尋找歷史資料的標題列 (關鍵字: "月份")
                             let historyHeaderIndex = -1;
                             let colMap = { month: -1, zb_rev: -1, zb_food: -1, zb_labor: -1, jg_rev: -1, jg_food: -1, jg_labor: -1 };
 
                             rows.forEach((row, rowIndex) => {
-                                // 當月輸入資料掃描 (全域搜尋)
                                 row.forEach((cell, colIndex) => {
                                     if (!cell) return;
                                     const str = cell.toString().trim();
-                                    const strLower = str.toLowerCase();
-
-                                    // 尋找數值 (看右邊那格)
+                                    
+                                    // 抓數值邏輯：只要該格有關鍵字，就抓右邊那格
                                     const nextCell = row[colIndex + 1];
                                     let val = 0;
-                                    if (nextCell) {
-                                        val = parseFloat(nextCell.toString().replace(/,/g, '').replace(/%/g, ''));
-                                    }
+                                    if (nextCell) val = parseFloat(nextCell.toString().replace(/,/g, '').replace(/%/g, ''));
 
                                     if (!isNaN(val)) {
-                                        if (str.includes('竹北業績')) storeData.zhubei.revenue = val;
-                                        if (str.includes('竹北目標')) storeData.zhubei.target = val;
-                                        if (str.includes('竹北食材')) storeData.zhubei.foodCostRate = val;
-                                        if (str.includes('竹北人事')) storeData.zhubei.laborCostRate = val;
+                                        // 模糊匹配：同時有「竹北」和「人事」就抓
+                                        if (str.includes('竹北') && (str.includes('業績') || str.includes('Revenue'))) storeData.zhubei.revenue = val;
+                                        if (str.includes('竹北') && str.includes('目標')) storeData.zhubei.target = val;
+                                        if (str.includes('竹北') && (str.includes('食材') || str.includes('Food'))) storeData.zhubei.foodCostRate = val;
+                                        if (str.includes('竹北') && (str.includes('人事') || str.includes('Labor'))) storeData.zhubei.laborCostRate = val;
 
-                                        if (str.includes('經國業績')) storeData.jingguo.revenue = val;
-                                        if (str.includes('經國目標')) storeData.jingguo.target = val;
-                                        if (str.includes('經國食材')) storeData.jingguo.foodCostRate = val;
-                                        if (str.includes('經國人事')) storeData.jingguo.laborCostRate = val;
+                                        if (str.includes('經國') && str.includes('業績')) storeData.jingguo.revenue = val;
+                                        if (str.includes('經國') && str.includes('目標')) storeData.jingguo.target = val;
+                                        if (str.includes('經國') && str.includes('食材')) storeData.jingguo.foodCostRate = val;
+                                        if (str.includes('經國') && str.includes('人事')) storeData.jingguo.laborCostRate = val;
                                     }
 
-                                    // 偵測歷史表格標題
-                                    if (str.includes('月份') || str.includes('Month')) {
-                                        historyHeaderIndex = rowIndex;
-                                    }
+                                    if (str.includes('月份')) historyHeaderIndex = rowIndex;
                                 });
                             });
 
-                            // Step 2: 如果有找到標題列，解析欄位索引
                             if (historyHeaderIndex !== -1) {
                                 const headerRow = rows[historyHeaderIndex];
                                 headerRow.forEach((cell, idx) => {
                                     if (!cell) return;
                                     const h = cell.toString().trim();
                                     if (h.includes('月份')) colMap.month = idx;
-                                    if (h.includes('竹北業績')) colMap.zb_rev = idx;
-                                    if (h.includes('竹北食材')) colMap.zb_food = idx;
-                                    if (h.includes('竹北人事')) colMap.zb_labor = idx;
-                                    if (h.includes('經國業績')) colMap.jg_rev = idx;
-                                    if (h.includes('經國食材')) colMap.jg_food = idx;
-                                    if (h.includes('經國人事')) colMap.jg_labor = idx;
+                                    if (h.includes('竹北') && h.includes('業績')) colMap.zb_rev = idx;
+                                    if (h.includes('竹北') && h.includes('食材')) colMap.zb_food = idx;
+                                    if (h.includes('竹北') && h.includes('人事')) colMap.zb_labor = idx;
+                                    if (h.includes('經國') && h.includes('業績')) colMap.jg_rev = idx;
+                                    if (h.includes('經國') && h.includes('食材')) colMap.jg_food = idx;
+                                    if (h.includes('經國') && h.includes('人事')) colMap.jg_labor = idx;
                                 });
 
-                                // Step 3: 讀取標題列以下的資料
                                 for (let i = historyHeaderIndex + 1; i < rows.length; i++) {
                                     const row = rows[i];
                                     const month = row[colMap.month];
-                                    if (!month) continue; // 如果月份是空的就跳過
+                                    if (!month) continue;
 
-                                    // 竹北資料
                                     if (colMap.zb_rev !== -1 && row[colMap.zb_rev]) {
                                         historyData.push({
                                             store: '竹北',
@@ -448,8 +422,6 @@
                                             labor: parseFloat(row[colMap.zb_labor])
                                         });
                                     }
-
-                                    // 經國資料
                                     if (colMap.jg_rev !== -1 && row[colMap.jg_rev]) {
                                         historyData.push({
                                             store: '經國',
@@ -461,7 +433,6 @@
                                     }
                                 }
                             }
-
                             setTimeout(() => { isLoading.value = false; }, 600);
                         },
                         error: function() { isLoading.value = false; }
@@ -470,7 +441,6 @@
 
                 onMounted(() => { fetchData(); });
 
-                // Level logic
                 const currentTier = computed(() => {
                     const r = activeData.value.revenue;
                     const t = activeData.value.target;
@@ -487,7 +457,6 @@
                     return 0;
                 });
 
-                // Styles
                 const tierName = computed(() => {
                     if (currentTier.value === 3) return "卓越巔峰 (Level 3)";
                     if (currentTier.value === 2) return "表現優異 (Level 2)";
