@@ -48,17 +48,17 @@
         .level-box-premium .sidebar-box h5 { color: var(--brand-gold) !important; margin-bottom: 1.5rem; }
         .premium-tag { position: absolute; top: -15px; right: 30px; background: var(--brand-gold); color: white; padding: 4px 16px; border-radius: 20px; font-size: 0.75rem; font-weight: 900; letter-spacing: 0.1em; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
         
-        /* 側邊欄優化區塊 */
+        /* 側邊欄：修正頂部間距至 24px 以達到視覺平衡 */
         .sidebar-box { 
-            background: #F8FAFC; 
-            padding: 50px 30px 30px 30px; /* 增加頂部內距，讓文字往下移 */
-            border-radius: 20px; 
-            height: fit-content; 
+            background: #F8FAFC !important; 
+            padding: 24px 30px 30px 30px !important; 
+            border-radius: 20px !important; 
+            height: fit-content !important; 
         }
         .sidebar-box h5 {
-            margin-top: 0;
-            margin-bottom: 1.5rem; /* 增加標題與下方清單的間距 */
-            font-weight: 900;
+            margin-top: 0 !important;
+            margin-bottom: 1.5rem !important;
+            font-weight: 900 !important;
         }
 
         .footer-info { background: var(--level3-dark-gray); color: #CBD5E1; padding: 60px 20px; margin-top: 80px; }
