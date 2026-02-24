@@ -45,9 +45,22 @@
         .level-box-premium .standard-desc { color: #E2E8F0 !important; }
         .level-box-premium .score-hint { background: #334155 !important; color: #94A3B8 !important; }
         .level-box-premium .sidebar-box { background: #475569 !important; color: #E2E8F0 !important; border: 1px solid #64748B; }
-        .level-box-premium .sidebar-box h5 { color: var(--brand-gold) !important; }
+        .level-box-premium .sidebar-box h5 { color: var(--brand-gold) !important; margin-bottom: 1.5rem; }
         .premium-tag { position: absolute; top: -15px; right: 30px; background: var(--brand-gold); color: white; padding: 4px 16px; border-radius: 20px; font-size: 0.75rem; font-weight: 900; letter-spacing: 0.1em; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
-        .sidebar-box { background: #F8FAFC; padding: 30px; border-radius: 20px; height: fit-content; }
+        
+        /* 側邊欄優化區塊 */
+        .sidebar-box { 
+            background: #F8FAFC; 
+            padding: 50px 30px 30px 30px; /* 增加頂部內距，讓文字往下移 */
+            border-radius: 20px; 
+            height: fit-content; 
+        }
+        .sidebar-box h5 {
+            margin-top: 0;
+            margin-bottom: 1.5rem; /* 增加標題與下方清單的間距 */
+            font-weight: 900;
+        }
+
         .footer-info { background: var(--level3-dark-gray); color: #CBD5E1; padding: 60px 20px; margin-top: 80px; }
         .footer-info h4 { color: var(--brand-gold); font-weight: 900; margin-bottom: 1.5rem; font-size: 1.3rem; }
         .footer-divider { height: 1px; background: #475569; margin: 40px 0; }
@@ -121,7 +134,6 @@
         let globalDashboardData = [];
 
         window.onload = function() {
-            // 一次載入三個內容檔案
             loadPart('front-house-content', 'front-house.html');
             loadPart('back-house-content', 'back-house.html');
             loadPart('dashboard-content', 'dashboard-content.html');
@@ -151,14 +163,13 @@
             const dContent = document.getElementById('dashboard-content');
             const timeline = document.getElementById('common-timeline');
 
-            // Reset UI
             fBtn.className = 'tab-btn inactive';
             bBtn.className = 'tab-btn inactive';
             dBtn.className = 'tab-btn inactive';
             fContent.className = 'content-section';
             bContent.className = 'content-section';
             dContent.className = 'content-section';
-            timeline.style.display = 'none'; // 預設隱藏，下面再判斷是否顯示
+            timeline.style.display = 'none';
 
             if (type === 'front') {
                 fBtn.className = 'tab-btn active'; 
@@ -171,20 +182,15 @@
             } else if (type === 'dash') {
                 dBtn.className = 'tab-btn dashboard-active'; 
                 dContent.className = 'content-section active'; 
-                
-                // 切換到儀表板時，如果還沒初始化資料，就執行初始化
                 initDashboard();
             }
         }
         
         function initDashboard() {
-            // 防止重複執行
             if (isDashboardLoaded) return; 
             
-            // 確保元素已經存在 (因為是非同步載入，這裡做個簡單檢查)
             const cutoffDisplay = document.getElementById('data-cutoff-display');
             if (!cutoffDisplay) {
-                // 如果 HTML 還沒載入完，延遲 500ms 再試一次
                 setTimeout(initDashboard, 500);
                 return;
             }
@@ -193,7 +199,6 @@
             const timeDisplay = document.getElementById('last-update');
             if(timeDisplay) timeDisplay.innerText = '系統連線時間：' + new Date().toLocaleString('zh-TW', { hour: '2-digit', minute: '2-digit' });
             
-            // ================= Demo 模式資料 (王Ｏ明版本) =================
             if (window.location.href.indexOf('demo') !== -1) {
                 document.getElementById('tab-dash').innerText = "時數儀表板";
                 if(timeDisplay) timeDisplay.innerHTML = "";
@@ -212,7 +217,6 @@
                 return;
             }
 
-            // ================= 正式模式 =================
             const freshCsvUrl = csvUrl + "&nocache=" + Date.now();
             Papa.parse(freshCsvUrl, {
                 download: true, header: true, skipEmptyLines: true,
